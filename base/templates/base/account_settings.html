@@ -1,0 +1,94 @@
+{% extends "base/main.html" %}
+{% block title %}Profile - CashPop{% endblock title %}
+
+{% block content %}
+
+<!-- Profile Content -->
+<main class="profile">
+  <div class="container">
+    <h1 class="page-title">My Profile</h1>
+    
+    <div class="profile-container">
+      <div class="profile-sidebar">
+        <div class="profile-card">
+          <h2 class="profile-name">{{request.user.first_name.capitalize}}</h2>
+          <p class="profile-email">{{request.user.username}}</p>
+          <p class="profile-member-since">{{request.user.userprofile.date_joined | timesince}}</p>
+          <div class="profile-level">
+            <p>Level 3 Earner</p>
+            <div class="progress-bar">
+              <div class="progress" style="width: 65%;"></div>
+            </div>
+            <p class="progress-text">65/100 XP to Level 4</p>
+          </div>
+        </div>
+        
+        <div class="profile-stats">
+          <div class="profile-stat-item">
+            <h3>Total Earned</h3>
+            <p>&#8358;{{request.user.userprofile.balance}}</p>
+          </div>
+          <div class="profile-stat-item">
+            <h3>Tasks Completed</h3>
+            <p>{{request.user.userprofile.total_task_completed}}</p>
+          </div>
+          <div class="profile-stat-item">
+            <h3>Current Streak</h3>
+            <p>{{request.user.userprofile.streak}} days</p>
+          </div>
+        </div>
+        
+        <div class="profile-actions">
+          <button class="btn btn-outline btn-block">Edit Profile</button>
+          <button class="btn btn-primary btn-block">Withdraw Funds</button>
+        </div>
+      </div>
+      
+      <div class="profile-main">
+        <div class="profile-tabs">
+          <a class="profile-tab" href="{% url "base:profile" %}">Task History</a>
+          <a class="profile-tab" href="{% url "base:payment-history" %}">Payment History</a>
+          <a class="profile-tab" href="{% url "base:account" %}">Account Settings</a>
+        </div>
+        
+        <div class="profile-tab-content" id="settings">
+          <h2>Account Settings</h2>
+          <form class="settings-form">
+            <div class="form-group">
+              <label for="profile-name">Account Number</label>
+              <input type="Number" name="account_number" id="profile-name" >
+            </div>
+            <div class="form-group">
+              <label for="profile-email">Bank Name</label>
+              <input type="email" name="bank_name" id="profile-email">
+            </div>
+            <div class="form-group">
+              <label for="profile-paypal">Full Name</label>
+              <small>Note: it must be the same with the one on your bank account</small>
+              <input type="email" name="full_name" id="profile-paypal">
+            </div>
+            <input class="start-link" type="submit" value="Save">
+            {% comment %} <h3>Notification Preferences</h3>
+            <div class="form-check">
+              <input type="checkbox" id="notify-new-tasks" checked>
+              <label for="notify-new-tasks">New task alerts</label>
+            </div>
+            <div class="form-check">
+              <input type="checkbox" id="notify-payments" checked>
+              <label for="notify-payments">Payment confirmations</label>
+            </div>
+            <div class="form-check">
+              <input type="checkbox" id="notify-promotions">
+              <label for="notify-promotions">Promotional messages</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Save Changes</button> {% endcomment %}
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="js/profile.js"></script>
+<script src="js/main.js"></script>
+{% endblock content %}

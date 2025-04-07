@@ -1,0 +1,166 @@
+{% extends "base/main.html" %}
+
+{% block title %}Dashboard - CashPop{% endblock title %}
+
+{% block content %}
+
+  <!-- Dashboard Content -->
+  <main class="dashboard">
+    <div class="container">
+      <div class="dashboard-text-container">
+        <h1 class="page-title">Dashboard</h1>
+        <h3>Welcome back {{request.user.first_name.capitalize}} </h3>
+      </div>
+      
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-card-icon">💰</div>
+          <div class="stat-card-content">
+            <h3>Total Earned</h3>
+            <p class="stat-value">&#8358;{{user.userprofile.balance}}</p>
+            <p class="stat-trend up">↑ $12.50 this week</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon">✅</div>
+          <div class="stat-card-content">
+            <h3>Tasks Completed</h3>
+            <p class="stat-value">{{total_user_task}} </p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon">⭐</div>
+          <div class="stat-card-content">
+            <h3>Streaks</h3>
+            <p class="stat-value">{{request.user.userprofile.streak}} days</p>
+            <p class="stat-trend neutral">Continue your streak!</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon">⏱️</div>
+          <div class="stat-card-content">
+            <h3>Available Tasks</h3>
+            <p class="stat-value">{{total_available_tasks}}</p>
+            <p class="stat-trend up">↑ 8 new today</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Earnings Chart -->
+      {% comment %} <div class="earnings-chart">
+        <h2>Earnings History</h2>
+        <div class="chart-container">
+          <canvas id="earningsChart"></canvas>
+        </div>
+      </div> {% endcomment %}
+      
+      <!-- Task Categories -->
+      <div class="task-filters">
+        <h2>Available Tasks</h2>
+        <div class="category-filters">
+          <a class="category-filter" href="?category=all">All Tasks</a>
+          <a class="category-filter" href="?category=social_media">Social Media</a>
+          <a class="category-filter" href="?category=videos">Videos</a>
+          <a class="category-filter" href="?category=surveys">Surveys</a>
+          <a class="category-filter" href="?category=others">Others</a>
+        </div>
+      </div>
+      
+      <!-- Tasks List -->
+      <div class="tasks-grid">
+
+        {% for task in total_tasks %}
+        {% if task.is_active %}
+        <div class="task-card" data-category="social">
+          <div class="task-card-header">
+            <span class="task-badge social">{{task.category | lower}}</span>
+            <span class="task-badge difficulty easy">Easy</span>
+          </div>
+          <h3 class="task-title">{{task.title}}</h3>
+          <p class="task-description">{{task.description}}</p>
+          <div class="task-meta">
+            <span class="task-time">⏱️ {{task.estimated_time_mins}} mins</span>
+            <span class="task-reward">&#8358;{{task.reward}}</span>
+          </div>
+          <a class="start-link" href="{% url "base:task-details" task.title%}">Task Details</a>
+        </div>
+        {% endif %}
+        
+        {% endfor %}
+
+        {% comment %} <div class="task-card" data-category="video">
+          <div class="task-card-header">
+            <span class="task-badge video">Watch Video</span>
+            <span class="task-badge difficulty easy">Easy</span>
+          </div>
+          <h3 class="task-title">Watch product review video</h3>
+          <p class="task-description">Watch the full 3-minute product review and answer a question.</p>
+          <div class="task-meta">
+            <span class="task-time">⏱️ 4 mins</span>
+            <span class="task-reward">$0.75</span>
+          </div>
+          <button class="btn btn-task">Start Task</button>
+        </div>
+        <div class="task-card" data-category="survey">
+          <div class="task-card-header">
+            <span class="task-badge survey">Survey</span>
+            <span class="task-badge difficulty medium">Medium</span>
+          </div>
+          <h3 class="task-title">Complete short lifestyle survey</h3>
+          <p class="task-description">Answer 10 questions about your shopping habits.</p>
+          <div class="task-meta">
+            <span class="task-time">⏱️ 5 mins</span>
+            <span class="task-reward">$1.25</span>
+          </div>
+          <button class="btn btn-task">Start Task</button>
+        </div>
+        <div class="task-card" data-category="social">
+          <div class="task-card-header">
+            <span class="task-badge social">Social Media</span>
+            <span class="task-badge difficulty medium">Medium</span>
+          </div>
+          <h3 class="task-title">Share a post on Twitter</h3>
+          <p class="task-description">Share the provided post on your Twitter account and keep it for 24 hours.</p>
+          <div class="task-meta">
+            <span class="task-time">⏱️ 3 mins</span>
+            <span class="task-reward">$0.80</span>
+          </div>
+          <button class="btn btn-task">Start Task</button>
+        </div>
+        <div class="task-card" data-category="video">
+          <div class="task-card-header">
+            <span class="task-badge video">Watch Video</span>
+            <span class="task-badge difficulty hard">Hard</span>
+          </div>
+          <h3 class="task-title">App tutorial and feedback</h3>
+          <p class="task-description">Watch a 5-minute app tutorial and provide detailed feedback.</p>
+          <div class="task-meta">
+            <span class="task-time">⏱️ 10 mins</span>
+            <span class="task-reward">$2.00</span>
+          </div>
+          <button class="btn btn-task">Start Task</button>
+        </div>
+        <div class="task-card" data-category="survey"> {% endcomment %}
+          {% comment %} <div class="task-card-header">
+            <span class="task-badge survey">Survey</span>
+            <span class="task-badge difficulty easy">Easy</span>
+          </div>
+          <h3 class="task-title">Food preference survey</h3>
+          <p class="task-description">Complete a quick 5-question survey about food preferences.</p>
+          <div class="task-meta">
+            <span class="task-time">⏱️ 2 mins</span>
+            <span class="task-reward">$0.40</span>
+          </div>
+          <button class="btn btn-task">Start Task</button> {% endcomment %}
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/main.js"></script>
+
+
+{% endblock content %}

@@ -1,0 +1,64 @@
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="header-content">
+        <div class="logo">
+          <a href=" {% url "base:home" %} ">
+            <span class="logo-icon">✨</span>
+            <span class="logo-text">CashPop</span>
+          </a>
+        </div>
+        
+        
+        {% if request.user.is_authenticated %}
+
+        <div class="dashboard-link-container">
+          <a href="{% url "base:dashboard" %}">Dashboard</a>
+          <a href="{% url "base:create-task" %}">Create task</a>
+        </div>
+
+        <div class="header-actions">         
+          <div class="balance">
+            <button class="btn-notification">
+              <span class="notification-icon">🔔</span>
+              <span class="notification-badge">3</span>
+            </button>
+            <span class="balance-icon">💰</span>
+            <div>
+              <div>
+                <span class="balance-label">Wallet:</span>
+                <span class="balance-amount">&#8358;{{request.user.userprofile.balance}}</span>
+              </div>
+
+              <div>
+                <span class="balance-label">Task Earnings:</span>
+                <span class="balance-amount">&#8358;{{request.user.userprofile.balance}}</span>
+              </div>
+            </div>
+            
+            
+            <a href=" {% url "base:profile" %} " class="avatar">
+              <span>U</span>
+            </a>
+            <a href="{% url "base:logout" %}">Logout</a>
+          </div>
+        </div>
+        {% else %}
+        <nav class="main-nav">
+          <ul>
+            <li><a href="{% url "base:register" %}">register</a></li>
+            <li><a href="{% url "base:login" %}">login</a></li>
+            <li><a href=" {% url "base:faq" %} ">FAQ</a></li>
+          </ul>
+        </nav>
+        {% endif %}
+        <button class="mobile-menu-toggle">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  

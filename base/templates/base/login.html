@@ -1,0 +1,52 @@
+{% extends "base/main.html" %}
+{% load static %}
+{% block title %}Login - CashPop{% endblock title %}
+
+
+{% block content %}
+
+<main>
+  <div class="auth-container">
+    <div class="auth-card">
+      <div class="auth-header">
+        <div class="logo centered">
+          <span class="logo-icon">✨</span>
+          <span class="logo-text">CashPop</span>
+        </div>
+        <h1>Welcome Back</h1>
+        <p>Log in to your CashPop account</p>
+      </div>
+      
+      <form class="auth-form" id="loginForm" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" name = "email" id="email" placeholder="Enter your email" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" name="password" id="password" placeholder="Enter your password" required>
+        </div>
+        
+        <div class="form-options">
+          <div class="remember-me">
+            <input type="checkbox" id="remember">
+            <label for="remember">Remember me</label>
+          </div>
+          
+          <a href="#" class="forgot-password">Forgot password?</a>
+        </div>
+        
+        <button type="submit" class="btn btn-primary btn-block">Log In</button>
+      </form>
+      
+      <div class="auth-footer">
+        <p>Don't have an account? <a href="register.html">Sign up</a></p>
+      </div>
+    </div>
+  </div>
+</main>
+
+{% comment %} <script src=" {% static "js/auth.js" %} "></script> {% endcomment %}
+{% endblock content %}

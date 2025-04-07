@@ -1,0 +1,64 @@
+{% extends "base/main.html" %}
+{% block title %}Register - CashPop{% endblock  %}
+{% block content %}
+<main>
+  <div class="auth-container">
+    <div class="auth-card">
+      <div class="auth-header">
+        <div class="logo centered">
+          <span class="logo-icon">✨</span>
+          <span class="logo-text">CashPop</span>
+        </div>
+        <h1>Create an Account</h1>
+        <p>Sign up and start earning with CashPop</p>
+      </div>
+      
+      <form class="auth-form" id="registerForm" method = "POST">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="fullName">First Name</label>
+          <input type="text" name="first_name" placeholder="Enter your first name" required>
+        </div>
+
+        <div class="form-group">
+          <label for="fullName">Last Name</label>
+          <input type="text" name="last_name" placeholder="Enter your last name" required>
+        </div>
+
+        <div class="form-group">
+          <label for="username">username</label>
+          <input type="text" name="user_name" placeholder="Enter your username" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" name="email" placeholder="Enter your email" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" name="password" placeholder="Create a password (min. 8 characters)" minlength="8" required>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Confirm Password</label>
+          <input type="password" name="confirm_password" placeholder="confirm your password" minlength="8" required>
+        </div>
+        
+        <div class="form-terms">
+          <input type="checkbox" id="terms" required>
+          <label for="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+        </div>
+        
+        <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+      </form>
+      
+      <div class="auth-footer">
+        <p>Already have an account? <a href="login.html">Log in</a></p>
+      </div>
+    </div>
+  </div>
+  
+  <script src="js/auth.js"></script>
+</main>
+{% endblock content %}

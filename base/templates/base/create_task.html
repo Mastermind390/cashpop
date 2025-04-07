@@ -1,0 +1,38 @@
+{% extends "base/main.html" %}
+{% block title %}Create Task - CashPop{% endblock title %}
+
+{% block content %}
+
+<main>
+    <div class="auth-container">
+        <div class="auth-card">
+          <div class="auth-header">
+            <div class="logo centered">
+              <span class="logo-icon">✨</span>
+              <span class="logo-text">CashPop</span>
+            </div>
+            <h1>Create a Job</h1>
+            {% comment %} <p>Sign up and start earning with CashPop</p> {% endcomment %}
+          </div>
+          
+
+          <form class="auth-form" id="registerForm" method = "POST">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="form-group">
+                <label for={{field.label}}> {{field.label}} </label>
+                {{field}}
+                </div>
+                {% endfor %} 
+                <input type="submit" value="create task">
+          </form>
+        </div>
+      </div>
+</main>
+
+
+
+
+
+
+{% endblock content %}

@@ -1,0 +1,61 @@
+{% extends "base/main.html" %}
+
+{% block title %}Task Details - CashPop{% endblock title %}
+
+
+{% block content %}
+
+<main>
+
+    <section class="task-details-container">
+        <div class="task-details-title">
+            <h3>
+                TASK DETAILS
+            </h3>
+        </div>
+        <div class="task-details-wrapper">
+            
+            <div class="task-details">
+                <div class="task">
+                    <h4> {{task.title.upper}} </h4>
+                    <hr>
+                    <br>
+                    <span>what is expected of you:</span>
+                    <br>
+                    <br>
+                    <div class="task-description-container">
+                        <p> {{task.description}} </p><br><br>
+                        <a class="start-link" href="{{task.link}}">Start Task</a>
+                        <br>
+                        <br>
+                        <hr>
+                        <br>
+                        <h4>Submit Proof</h4>
+                        <form action="" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <label for="proof">Enter username or email you used to complete the task</label><br><br>
+                            <input class="proof-input" type="text" name="proof" placeholder="enter username or email address"><br><br>
+                            <label for="screenshort">Upload the screenshot of your Proof</label><br>
+                            <input class="image-input" type="file" name="screenshot" id="">
+                            <br>
+                            <br>
+                            <input class="start-link" type="submit" value="Submit Proof">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+</main>
+
+
+
+
+
+
+{% endblock content %}
