@@ -1647,4 +1647,80 @@ ul, ol {
   color: white;
 }
 
+.payment-history-item input {
+  padding: 10px;
+  margin-bottom: 15px;
+  margin-top: 10px;
+}
+
+
+.payment-history-item input:focus {
+  outline: none;
+}
+
+.withdraw-wrapper {
+  background-color: #f7f7f7;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.amount-container h4 {
+  font-size: large;
+  margin: 0;
+  color: rgb(4, 1, 180);
+}
+
+.status-pending{
+  color: orange;
+}
+
+.status-completed{
+  color: orange;
+}
+
+.proof-container {
+  display: flex;
+  justify-content: space-between;
+  background-color: #f1f1f1;
+  padding: 15px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+
+.proof-container h3 {
+  margin: 0;
+  margin: 15px 0;
+}
+
+.username {
+  margin: 0;
+  margin-top: 13px;
+}
+
+.approve {
+  background-color: green;
+  color: white;
+  padding: 8px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+
+.reject {
+  background-color: red;
+  color: white;
+  padding: 8px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.approve-btn {
+  margin-bottom: 20px;
+}
+
  

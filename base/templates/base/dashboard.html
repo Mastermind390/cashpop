@@ -18,7 +18,7 @@
           <div class="stat-card-icon">💰</div>
           <div class="stat-card-content">
             <h3>Total Earned</h3>
-            <p class="stat-value">&#8358;{{user.userprofile.balance}}</p>
+            <p class="stat-value">&#8358;{{user.userprofile.total_reward}}</p>
             <p class="stat-trend up">↑ $12.50 this week</p>
           </div>
         </div>
@@ -69,24 +69,22 @@
       
       <!-- Tasks List -->
       <div class="tasks-grid">
-
-        {% for task in total_tasks %}
-        {% if task.is_active %}
-        <div class="task-card" data-category="social">
-          <div class="task-card-header">
-            <span class="task-badge social">{{task.category | lower}}</span>
-            <span class="task-badge difficulty easy">Easy</span>
-          </div>
-          <h3 class="task-title">{{task.title}}</h3>
-          <p class="task-description">{{task.description}}</p>
-          <div class="task-meta">
-            <span class="task-time">⏱️ {{task.estimated_time_mins}} mins</span>
-            <span class="task-reward">&#8358;{{task.reward}}</span>
-          </div>
-          <a class="start-link" href="{% url "base:task-details" task.title%}">Task Details</a>
+        {% for task in available_tasks %}
+       {% if task.usertask.status != "approved" %}
+       <div class="task-card" data-category="social">
+        <div class="task-card-header">
+          <span class="task-badge social">{{task.category | lower}}</span>
+          <span class="task-badge difficulty easy">Easy</span>
         </div>
-        {% endif %}
-        
+        <h3 class="task-title">{{task.title}}</h3>
+        <p class="task-description">{{task.description}}</p>
+        <div class="task-meta">
+          <span class="task-time">⏱️ {{task.estimated_time_mins}} mins</span>
+          <span class="task-reward">&#8358;{{task.reward}}</span>
+        </div>
+        <a class="start-link" href="{% url "base:task-details" task.title%}">Task Details</a>
+      </div>
+       {% endif %}
         {% endfor %}
 
         {% comment %} <div class="task-card" data-category="video">

@@ -1,0 +1,38 @@
+{% extends "base/main.html" %}
+{% block title %}Profile - CashPop{% endblock title %}
+
+{% block content %}
+
+<!-- Profile Content -->
+<main class="profile">
+  <div class="container">
+    <h1 class="page-title">My Profile</h1>
+    
+    <div class="profile-container">
+      {% include "base/profile_sidebar.html" %}
+      
+      <div class="profile-main">
+        {% include "base/profile_nav_links.html" %}
+        
+        <div>
+          <div class="profile-tab-content" id="payments">
+          <h2>Confirm Approve</h2>
+          <h3> {{task.task.title}} </h3>
+          <p>completed by {{task.user.first_name}}</p>
+            <form action="" method="POST">
+                {% csrf_token %}
+                <input class="approve" type="submit" value = "Approve">
+            </form>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="js/profile.js"></script>
+<script src="js/main.js"></script>
+{% endblock content %}
+
+
+{% comment %} {{task.task.reward}} {% endcomment %}

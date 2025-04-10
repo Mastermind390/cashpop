@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import home, registerPage, loginPage, faqPage, dashboard, logoutPage, profile, createTask, task_details, payment_history, account
+from .views import home, registerPage, loginPage, faqPage, dashboard, logoutPage, profile, createTask, task_details, withdraw, account, task_review, approve, reject
 
 app_name = 'base'
 
@@ -13,7 +13,9 @@ urlpatterns = [
     path("profile/", profile, name="profile"),
     path("create-task/", createTask, name="create-task"),
     path("task-details/<str:pk>", task_details, name="task-details"),
-    path("payment-history/", payment_history, name="payment-history"),
+    path("withdraw/", withdraw, name="withdraw"),
     path("account_settings", account, name="account"),
-
+    path("task-review", task_review, name="task-review"),
+    path("confirm-approve/<int:pk>", approve, name="confirm-approve"),
+    path("confirm-reject/<int:pk>", reject, name="confirm-reject"),
 ]

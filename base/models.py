@@ -10,6 +10,8 @@ CATEGORY_CHOICES = [
     ]
 
 
+
+
 class Task(models.Model):
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
     category = models.CharField(max_length=100, choices=CATEGORY_CHOICES, default='others')
@@ -27,6 +29,7 @@ class Task(models.Model):
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    task_earning = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     referral_code = models.CharField(max_length=10, unique=True, blank=True)
     referred_by = models.ForeignKey('self', null=True, blank=True, on_delete=models.SET_NULL)
     date_joined = models.DateTimeField(auto_now_add=True)
@@ -53,7 +56,7 @@ class UserTask(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
-    proof_image = models.ImageField(upload_to='images/', blank=True, null=True)  # Optional proof (screenshot)
+    proof_image = models.ImageField(upload_to='images/', default="images/hero-illustration.svg")  # Optional proof (screenshot)
     proof_username = models.CharField(max_length=200, default="user.firstname")
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
     completed_at = models.DateTimeField(auto_now_add=True)
@@ -69,3 +72,27 @@ class UserLogin(models.Model):
 
     class Meta:
         unique_together = ('user', 'login_date')
+
+
+class UserAccountDetail(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    bank_name = models.CharField(max_length=100)
+    account_number = models.CharField(max_length=10)
+    full_name = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.full_name
+    
+
+
+class Withdrawal(models.Model):
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('approved', 'Approved'),
+        ('rejected', 'Rejected'),
+    ]
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    amount = models.PositiveBigIntegerField(default=0)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
+    requested_at = models.DateTimeField(auto_now_add=True)

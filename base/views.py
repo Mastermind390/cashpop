@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import TaskForm
-from .models import UserProfile, UserTask, Task
+from .models import UserProfile, UserTask, Task, UserAccountDetail, Withdrawal
 from .streak import get_login_streak
 
 
@@ -86,25 +86,25 @@ def faqPage(request):
 def dashboard(request):
     user = User.objects.get(id=request.user.id)
     userprofile = UserProfile.objects.get(id=user.id)
-    usertask = UserTask.objects.all()
+    usertask = UserTask.objects.filter(status="approved")
     total_user_task = usertask.count()
     streaks = get_login_streak(user)
     request.user.userprofile.streak += streaks
     
-    available_tasks = Task.objects.all()
-    total_available_tasks = 0
-
-    for task in available_tasks:
-        if task.is_active:
-            total_available_tasks+=1
+    available_tasks = Task.objects.filter(is_active=True)
+    
 
 
-    request.GET.get('q') if request.GET.get("q") != None else ""
     category = request.GET.get("category", "all")
     if category == "all":
         total_tasks = Task.objects.all()
     else:
         total_tasks = Task.objects.filter(category__icontains=category)
+
+    completed_task_ids = usertask.filter(status="approved").values_list("task_id", flat=True)
+
+    available_tasks = available_tasks.exclude(id__in=completed_task_ids)
+    total_available_tasks = available_tasks.count()
 
     context = {
         "user" : user, 
@@ -122,10 +122,8 @@ def profile(request):
     page = "profile"
     user = request.user
     streaks = get_login_streak(user)
-
-    user_profile = request.user.userprofile
-    user_profile.streak += streaks
-    user_profile.save()
+    streaks = get_login_streak(user)
+    request.user.userprofile.streak += streaks
     
     usertask = UserTask.objects.all()
 
@@ -162,6 +160,8 @@ def createTask(request):
 
     return render(request, "base/create_task.html", {"form" : form})
 
+
+@login_required(login_url="base:login")
 def task_details(request, pk):
     task = get_object_or_404(Task, title=pk)
 
@@ -184,20 +184,95 @@ def task_details(request, pk):
     }
     return render(request, "base/task_details.html", context)
 
-
-def payment_history(request):
+@login_required(login_url="base:login")
+def withdraw(request):
     user = request.user
     streaks = get_login_streak(user)
     request.user.userprofile.streak += streaks
-    return render(request, "base/payment_history.html")
+    withdraws = Withdrawal.objects.all()
+
+    if request.method == "POST":
+        amount = request.POST.get("amount")
+
+        withdraw = Withdrawal.objects.create(
+            user = user,
+            amount = amount,
+            status = "pending"
+        )
+        withdraw.save()
+        return redirect("base:withdraw")
 
 
+
+    return render(request, "base/withdraw.html", {"withdraws" : withdraws})
+
+
+
+@login_required(login_url="base:login")
 def account(request):
-    state = "edit"
+    state = "not-edit"
     user = request.user
     streaks = get_login_streak(user)
     request.user.userprofile.streak += streaks
+
+    if request.method == "POST":
+        full_name = request.POST.get("full_name")
+        account_number = request.POST.get("account_number")
+        bank_name = request.POST.get("bank_name")
+
+        UserAccountDetail.objects.update_or_create(
+            user = request.user,
+            bank_name = bank_name,
+            account_number = account_number,
+            full_name = full_name
+        )
+       
+        state = "edit"
+        return redirect("base:dashboard")
+
+
     context = {
         "state" : state
     }
     return render(request, "base/account_settings.html", context)
+
+
+def task_review(request):
+    user_tasks = get_list_or_404(UserTask)
+
+    user = request.user
+    streaks = get_login_streak(user)
+    request.user.userprofile.streak += streaks
+    return render(request, "base/task_review.html", {"user_tasks" : user_tasks})
+
+
+def approve(request, pk):
+    task = get_object_or_404(UserTask, id=pk)
+    user = request.user.id
+
+    if request.method == "POST":
+        # 1. Update the UserTask status
+        task.status = "approved"
+        task.save()
+
+        # 2. Update the user's profile earnings
+        user_profile = task.user.userprofile
+        user_profile.task_earning += task.task.reward
+        user_profile.total_task_completed += 1
+        user_profile.total_reward += task.task.reward
+        user_profile.save()
+    
+        return redirect("base:task-review")
+        
+
+    return render(request, "base/approve.html", {"task" : task})
+
+
+def reject(request, pk):
+    task = get_object_or_404(UserTask, id=pk)
+
+    if request.method == "POST":
+        task.status = "rejected"
+        task.save()
+        return redirect("base:task-review")
+    return render(request, "base/task_review.html", {"user_tasks" : user_tasks})

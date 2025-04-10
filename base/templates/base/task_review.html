@@ -1,0 +1,66 @@
+{% extends "base/main.html" %}
+{% block title %}Profile - CashPop{% endblock title %}
+
+{% block content %}
+
+<!-- Profile Content -->
+<main class="profile">
+  <div class="container">
+    <h1 class="page-title">My Profile</h1>
+    
+    <div class="profile-container">
+      {% include "base/profile_sidebar.html" %}
+      
+      <div class="profile-main">
+        {% include "base/profile_nav_links.html" %}
+        
+        <div>
+          <div class="profile-tab-content" id="payments">
+          <h2>Review Tasks</h2>
+          {% for task in user_tasks %}
+          {% if task.task.creator == request.user %}
+          <div class="proof-container">
+            <div>
+              <span>{{task.user.first_name}} completed</span>
+              <h3>{{task.task.title}}</h3>
+              {% if task.proof_image and task.status != "approved" %}
+              <a class="start-link" href="{{task.proof_image.url}}" target="blank">view proof</a> <br>
+              {% else %}
+              {% comment %} <span>No image provided</span> {% endcomment %}
+              {% endif %}
+              <p class="username">with this username @{{task.proof_username}}</p>
+              <span>{{task.completed_at | timesince}} ago</span>
+            </div>
+
+            <div class="review-btn">
+              {% if task.status == "approved" %}
+              <div>
+                {% if task.status == "approved" %}
+                <span class="task-history-status completed"> {{task.status}} </span>
+                {% else %}
+                <span class="task-history-status rejected"> {{task.status}} </span>
+                {% endif %}
+              </div>
+              {% else %}
+              <div class="approve-btn">
+                <a  class="approve" href=" {% url "base:confirm-approve" task.id %} ">Approve</a>
+               </div>
+               <div>
+                 <a  class="reject" href=" {% url "base:confirm-reject" task.id %} ">Reject</a>
+               </div>
+               {% endif %}
+            </div>
+          </div>
+          
+          {% endif %}
+          {% endfor %}
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="js/profile.js"></script>
+<script src="js/main.js"></script>
+{% endblock content %}
