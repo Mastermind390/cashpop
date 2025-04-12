@@ -31,6 +31,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     task_earning = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    locked_balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     referral_code = models.CharField(max_length=10, unique=True, blank=True)
     referred_by = models.ForeignKey('self', null=True, blank=True, on_delete=models.SET_NULL)
     date_joined = models.DateTimeField(auto_now_add=True)

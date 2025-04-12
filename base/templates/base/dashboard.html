@@ -9,7 +9,7 @@
     <div class="container">
       <div class="dashboard-text-container">
         <h1 class="page-title">Dashboard</h1>
-        <h3>Welcome S{{request.user.email.capitalize}} </h3>
+        <h3>Welcome {{request.user.email.capitalize}} </h3>
       </div>
       
       <!-- Stats -->
@@ -33,7 +33,7 @@
           <div class="stat-card-icon">⭐</div>
           <div class="stat-card-content">
             <h3>Streaks</h3>
-            <p class="stat-value">{{request.user.userprofile.streak}} days</p>
+            <p class="stat-value">{{userprofile.streak}} day{{userprofile.streak | pluralize}}</p>
             <p class="stat-trend neutral">Continue your streak!</p>
           </div>
         </div>
@@ -74,7 +74,7 @@
        <div class="task-card" data-category="social">
         <div class="task-card-header">
           <span class="task-badge social">{{task.category | lower}}</span>
-          <span class="task-badge difficulty easy">Easy</span>
+          <span class="task-badge difficulty easy">{{task.amount_tasker}}</span>
         </div>
         <h3 class="task-title">{{task.title}}</h3>
         <p class="task-description">{{task.description}}</p>

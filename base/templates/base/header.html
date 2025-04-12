@@ -34,11 +34,16 @@
                 <span class="balance-label">Task Earnings:</span>
                 <span class="balance-amount">&#8358;{{request.user.userprofile.task_earning}}</span>
               </div>
+
+              <div>
+                <span class="balance-label">Locked balance:</span>
+                <span class="balance-amount">&#8358;{{request.user.userprofile.locked_balance}}</span>
+              </div>
             </div>
             
             
             <a href=" {% url "base:profile" %} " class="avatar">
-              <span>U</span>
+              <span>{{request.user.first_name.capitalize|slice:"0:1"}}</span>
             </a>
             <a href="{% url "base:logout" %}">Logout</a>
           </div>

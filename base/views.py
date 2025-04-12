@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import TaskForm
 from .models import UserProfile, UserTask, Task, UserAccountDetail, Withdrawal
 from .streak import get_login_streak
+from django.db import transaction
 
 
 
@@ -76,7 +77,7 @@ def loginPage(request):
 
     return render(request, "base/login.html")
 
-
+@login_required(login_url="base:login")
 def logoutPage(request):
     logout(request)
     return redirect("base:login")
@@ -87,7 +88,7 @@ def faqPage(request):
 @login_required(login_url="base:login")
 def dashboard(request):
     user = User.objects.get(id=request.user.id)
-    userprofile = UserProfile.objects.get(id=user.id)
+    userprofile = UserProfile.objects.get(user=user)
     
     # Get all approved tasks for the user
     usertask = UserTask.objects.filter(user=user, status="approved")
@@ -95,7 +96,8 @@ def dashboard(request):
     
     # Update streaks
     streaks = get_login_streak(user)
-    request.user.userprofile.streak += streaks
+    userprofile.streak += streaks
+    # userprofile.save()
     
     # Get completed task IDs
     completed_task_ids = usertask.values_list("task_id", flat=True)
@@ -130,8 +132,9 @@ def profile(request):
     page = "profile"
     user = request.user
     streaks = get_login_streak(user)
-    streaks = get_login_streak(user)
-    request.user.userprofile.streak += streaks
+    userprofile = user.userprofile
+    userprofile.streak += streaks
+    # userprofile.save()
     
     usertask = UserTask.objects.all()
 
@@ -144,7 +147,8 @@ def profile(request):
 def createTask(request):
     form = TaskForm()
     user = request.user
-    user_wallet_balance = user.userprofile.balance
+    userprofile = user.userprofile
+    user_wallet_balance = userprofile.balance
 
     if request.method == "POST":
         user = user
@@ -188,9 +192,13 @@ def createTask(request):
             link = link,
             estimated_time_mins = minutes,
             reward = reward,
+            amount_tasker = quantity,
             is_active = True
             )
             task.save()
+            userprofile.balance -= task_order
+            userprofile.locked_balance += task_order
+            userprofile.save()
             return redirect("base:dashboard")
 
     return render(request, "base/create_task.html", {"form" : form})
@@ -223,7 +231,9 @@ def task_details(request, pk):
 def withdraw(request):
     user = request.user
     streaks = get_login_streak(user)
-    request.user.userprofile.streak += streaks
+    userprofile = user.userprofile
+    userprofile.streak += streaks
+    # userprofile.save()
     withdraws = Withdrawal.objects.all()
 
     if request.method == "POST":
@@ -299,7 +309,7 @@ def account(request):
     }
     return render(request, "base/account_settings.html", context)
 
-
+@login_required(login_url="base:login")
 def task_review(request):
     user_tasks = get_list_or_404(UserTask)
 
@@ -309,28 +319,53 @@ def task_review(request):
     return render(request, "base/task_review.html", {"user_tasks" : user_tasks})
 
 
+@transaction.atomic
+@login_required(login_url="base:login")
 def approve(request, pk):
     task = get_object_or_404(UserTask, id=pk)
-    user = request.user.id
 
     if request.method == "POST":
-        # 1. Update the UserTask status
-        task.status = "approved"
-        task.save()
+        # Lock the row to prevent concurrent updates
+        task = UserTask.objects.select_for_update().get(id=pk)
 
-        # 2. Update the user's profile earnings
+        # Prevent duplicate approval
+        # if task.status != "pending":
+        #     messages.warning(request, "This task has already been reviewed.")
+        #     return redirect("base:task-review")
+
+        # Check if the task still has available slots
+        if task.task.amount_tasker <= 0:
+            task.task.is_active=False
+            messages.error(request, "No available slots left for this task.")
+            return redirect("base:task-review")
+
+        # Check if the creator has enough locked balance
+        creator_profile = task.task.creator.userprofile
+        if creator_profile.locked_balance < task.task.reward:
+            messages.error(request, "Insufficient locked balance to approve this task.")
+            return redirect("base:task-review")
+
+        # 1. Approve the user task
+        task.status = "approved"
+        task.task.amount_tasker -= 1
+        creator_profile.locked_balance -= task.task.reward
+        task.save()
+        task.task.save()
+        creator_profile.save()
+
+        # 2. Update the user profile earnings
         user_profile = task.user.userprofile
         user_profile.task_earning += task.task.reward
         user_profile.total_task_completed += 1
         user_profile.total_reward += task.task.reward
         user_profile.save()
-    
+
+        messages.success(request, "Task approved successfully!")
         return redirect("base:task-review")
-        
 
-    return render(request, "base/approve.html", {"task" : task})
+    return render(request, "base/approve.html", {"task": task})
 
-
+@login_required(login_url="base:login")
 def reject(request, pk):
     task = get_object_or_404(UserTask, id=pk)
 

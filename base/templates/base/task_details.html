@@ -24,13 +24,16 @@
                     <br>
                     <br>
                     <div class="task-description-container">
-                        <p> {{task.description}} </p><br><br>
+                        <p>{{task.description}}</p><br><br>
+                        {% if task.creator != request.user %}
                         <a class="start-link" href="{{task.link}}">Start Task</a>
+                        {% endif %}
                         <br>
                         <br>
                         <hr>
                         <br>
                         <h4>Submit Proof</h4>
+                        {% if task.creator != request.user %}
                         <form action="" method="POST" enctype="multipart/form-data">
                             {% csrf_token %}
                             <label for="proof">Enter username or email you used to complete the task</label><br><br>
@@ -41,6 +44,7 @@
                             <br>
                             <input class="start-link" type="submit" value="Submit Proof">
                         </form>
+                        {% endif %}
                     </div>
                 </div>
             </div>
