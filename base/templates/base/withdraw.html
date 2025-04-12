@@ -17,11 +17,25 @@
         <div>
           <div class="profile-tab-content" id="payments">
           <h2>Requet Withdrawal</h2>
+
+            <div class="earning-transfer">
+              <h4>Transfer for Task Earning to Wallet</h4>
+              <form action="" method="POST">
+                {% csrf_token %}
+                <input type="text" name="move_amount">
+                <input type="hidden" name="action" value="move">
+                <input class="start-link" type="submit" value="Transfer">
+              <p>Task-Earning Balance: &#8358;{{request.user.userprofile.task_earning}}</p>
+              </form>
+            </div>
+
+
           <div class="payment-history">
             <div class="payment-history-item">
               <form action="" method="POST">
                 {% csrf_token %}
                 <label for="amount">Amount to withdraw</label><br>
+                <input type="hidden" name="action" value="withdraw">
                 <input type="text" name="amount"><br>
                 <small>NOTE: minimum wiithdrawal is &#8358;5,000</small><br>
                 <input class="start-link" type="submit" name="withdraw" value="Request Withdrawal"><br>

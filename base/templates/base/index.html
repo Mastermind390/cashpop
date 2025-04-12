@@ -12,9 +12,8 @@
         <p>Complete simple tasks like following social accounts, watching videos, and more to earn cash rewards instantly!</p>
         <div class="hero-buttons">
           <a href="{% url "base:register" %}" class="btn btn-primary">Get Started</a>
-          <a href="#how-it-works" class="btn btn-outline">Learn More</a>
         </div>
-        <div class="hero-stats">
+        <!-- <div class="hero-stats">
           <div class="stat-item">
             <span class="stat-number">100K+</span>
             <span class="stat-label">Happy Users</span>
@@ -27,7 +26,7 @@
             <span class="stat-number">500+</span>
             <span class="stat-label">Daily Tasks</span>
           </div>
-        </div>
+        </div> -->
       </div>
       <div class="hero-image">
         <img src="images/hero-illustration.svg" alt="Earn with CashPop">
@@ -69,48 +68,24 @@
     <div class="container">
       <h2 class="section-title">Popular Tasks</h2>
       <div class="tasks-grid">
+        {% for task in tasks %}
         <div class="task-card">
           <div class="task-card-header">
-            <span class="task-badge social">Social Media</span>
+            <span class="task-badge social">{{task.category}}</span>
             <span class="task-badge difficulty easy">Easy</span>
           </div>
-          <h3 class="task-title">Follow @brandsocial on Instagram</h3>
-          <p class="task-description">Follow this account and screenshot your follow for verification.</p>
+          <h3 class="task-title">{{task.title}}</h3>
+          <p class="task-description">{{task.description}}.</p>
           <div class="task-meta">
-            <span class="task-time">⏱️ 2 mins</span>
-            <span class="task-reward">$0.50</span>
+            <span class="task-time">⏱️ {{task.estimated_time_mins}}</span>
+            <span class="task-reward">&#8358;{{task.reward}}</span>
           </div>
-          <button class="btn btn-task">Start Task</button>
+          <a href=" {% url "base:task-details" task.description %} ">View Task Details</a>
         </div>
-        <div class="task-card">
-          <div class="task-card-header">
-            <span class="task-badge video">Watch Video</span>
-            <span class="task-badge difficulty easy">Easy</span>
-          </div>
-          <h3 class="task-title">Watch product review video</h3>
-          <p class="task-description">Watch the full 3-minute product review and answer a question.</p>
-          <div class="task-meta">
-            <span class="task-time">⏱️ 4 mins</span>
-            <span class="task-reward">$0.75</span>
-          </div>
-          <button class="btn btn-task">Start Task</button>
-        </div>
-        <div class="task-card">
-          <div class="task-card-header">
-            <span class="task-badge survey">Survey</span>
-            <span class="task-badge difficulty medium">Medium</span>
-          </div>
-          <h3 class="task-title">Complete short lifestyle survey</h3>
-          <p class="task-description">Answer 10 questions about your shopping habits.</p>
-          <div class="task-meta">
-            <span class="task-time">⏱️ 5 mins</span>
-            <span class="task-reward">$1.25</span>
-          </div>
-          <button class="btn btn-task">Start Task</button>
-        </div>
+        {% endfor %}
       </div>
       <div class="view-more">
-        <a href="dashboard.html" class="btn btn-outline">View All Tasks</a>
+        <a href="{% url "base:dashboard" %}" class="btn btn-outline">View All Tasks</a>
       </div>
     </div>
   </section>
@@ -122,13 +97,13 @@
       <div class="testimonials-grid">
         <div class="testimonial">
           <div class="testimonial-content">
-            <p>"I've earned over $200 in my first month using CashPop. It's so easy to complete tasks during my commute!"</p>
+            <p>"I've earned over &#8358;10,000 in my first month using CashPop. It's so easy to complete tasks during my commute!"</p>
           </div>
           <div class="testimonial-author">
             <div class="testimonial-avatar">JS</div>
             <div class="testimonial-info">
               <span class="testimonial-name">Jessica S.</span>
-              <span class="testimonial-earned">Earned $200+</span>
+              <span class="testimonial-earned">Earned &#8358;10,000+</span>
             </div>
           </div>
         </div>
@@ -140,19 +115,19 @@
             <div class="testimonial-avatar">ML</div>
             <div class="testimonial-info">
               <span class="testimonial-name">Mike L.</span>
-              <span class="testimonial-earned">Earned $150+</span>
+              <span class="testimonial-earned">Earned &#8358;5,000+</span>
             </div>
           </div>
         </div>
         <div class="testimonial">
           <div class="testimonial-content">
-            <p>"I was skeptical at first, but CashPop really works! I've been able to pay for my Netflix subscription just by completing tasks."</p>
+            <p>"I was skeptical at first, but CashPop really works! I've been able to pay for my data subscription just by completing tasks."</p>
           </div>
           <div class="testimonial-author">
             <div class="testimonial-avatar">AT</div>
             <div class="testimonial-info">
               <span class="testimonial-name">Aisha T.</span>
-              <span class="testimonial-earned">Earned $120+</span>
+              <span class="testimonial-earned">Earned &#8358;15,000+</span>
             </div>
           </div>
         </div>
@@ -166,58 +141,10 @@
       <div class="cta-content">
         <h2>Ready to Start Earning?</h2>
         <p>Join thousands of users who are turning their spare time into real money with CashPop.</p>
-        <a href="register.html" class="btn btn-primary btn-large">Sign Up Now</a>
+        <a href="{% url "base:register" %}" class="btn btn-primary btn-large">Sign Up Now</a>
       </div>
     </div>
   </section>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-content">
-        <div class="footer-logo">
-          <span class="logo-icon">✨</span>
-          <span class="logo-text">CashPop</span>
-        </div>
-        <div class="footer-links">
-          <div class="footer-links-column">
-            <h3>Company</h3>
-            <ul>
-              <li><a href="about.html">About Us</a></li>
-              <li><a href="#">Careers</a></li>
-              <li><a href="#">Press</a></li>
-              <li><a href="#">Blog</a></li>
-            </ul>
-          </div>
-          <div class="footer-links-column">
-            <h3>Resources</h3>
-            <ul>
-              <li><a href="faq.html">FAQ</a></li>
-              <li><a href="#">Support</a></li>
-              <li><a href="#">Task Guidelines</a></li>
-              <li><a href="#">Community</a></li>
-            </ul>
-          </div>
-          <div class="footer-links-column">
-            <h3>Legal</h3>
-            <ul>
-              <li><a href="#">Privacy Policy</a></li>
-              <li><a href="#">Terms of Service</a></li>
-              <li><a href="#">Cookie Policy</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>&copy; 2023 CashPop. All rights reserved.</p>
-        <div class="social-links">
-          <a href="#" class="social-link">Facebook</a>
-          <a href="#" class="social-link">Twitter</a>
-          <a href="#" class="social-link">Instagram</a>
-        </div>
-      </div>
-    </div>
-  </footer>
 
   <script src="js/main.js"></script>
 </main>

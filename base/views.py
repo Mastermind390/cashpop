@@ -11,11 +11,12 @@ from .streak import get_login_streak
 
 
 def home(request):
-
     if request.user.is_authenticated:
         return redirect("base:dashboard")
 
-    return render(request, "base/index.html")
+    tasks = Task.objects.all()[:3]
+
+    return render(request, "base/index.html", {"tasks" : tasks})
 
 
 def registerPage(request):
@@ -34,20 +35,21 @@ def registerPage(request):
         if password == confirm_password:
             try:
                 user = User.objects.get(username=email)
-            except:
-                messages.error(request, "user already exist")
+                # If we got here, it means user *does* exist
+                messages.error(request, "User already exists, please login.")
                 return render(request, "base/register.html")
-            finally:
+            except User.DoesNotExist:
+                # User doesn't exist, go ahead and register
                 user = User.objects.create_user(
                     username=email,
                     password=password,
                     first_name=first_name,
                     last_name=last_name,
-                    email=user_name
-                )
-                user.save()
-                login(request, user)
-                return render(request, "base/dashboard.html")
+                    email=user_name 
+            )
+            user.save()
+            login(request, user)
+            return redirect("base:dashboard")
         else:
             messages.error(request, "password does not match")
 
@@ -86,34 +88,40 @@ def faqPage(request):
 def dashboard(request):
     user = User.objects.get(id=request.user.id)
     userprofile = UserProfile.objects.get(id=user.id)
-    usertask = UserTask.objects.filter(status="approved")
+    
+    # Get all approved tasks for the user
+    usertask = UserTask.objects.filter(user=user, status="approved")
     total_user_task = usertask.count()
+    
+    # Update streaks
     streaks = get_login_streak(user)
     request.user.userprofile.streak += streaks
     
-    available_tasks = Task.objects.filter(is_active=True)
+    # Get completed task IDs
+    completed_task_ids = usertask.values_list("task_id", flat=True)
     
-
-
+    # Filter tasks by category
     category = request.GET.get("category", "all")
     if category == "all":
-        total_tasks = Task.objects.all()
+        available_tasks = Task.objects.filter(is_active=True)
     else:
-        total_tasks = Task.objects.filter(category__icontains=category)
-
-    completed_task_ids = usertask.filter(status="approved").values_list("task_id", flat=True)
-
+        available_tasks = Task.objects.filter(is_active=True, category__icontains=category)
+    
+    # Exclude completed tasks
     available_tasks = available_tasks.exclude(id__in=completed_task_ids)
+    
+    total_tasks = Task.objects.filter(is_active=True).count()  # Or apply same category logic if you want
     total_available_tasks = available_tasks.count()
 
     context = {
-        "user" : user, 
-        "userprofile":userprofile, 
-        "total_user_task" : total_user_task,
-        "total_tasks" : total_tasks,
-        "available_tasks" : available_tasks,
-        "total_available_tasks" : total_available_tasks
-        }
+        "user": user,
+        "userprofile": userprofile,
+        "total_user_task": total_user_task,
+        "total_tasks": total_tasks,
+        "available_tasks": available_tasks,
+        "total_available_tasks": total_available_tasks
+    }
+    
     return render(request, "base/dashboard.html", context)
 
 
@@ -135,28 +143,55 @@ def profile(request):
 @login_required(login_url="base:login")
 def createTask(request):
     form = TaskForm()
+    user = request.user
+    user_wallet_balance = user.userprofile.balance
 
     if request.method == "POST":
-        user = request.user
+        user = user
         category = request.POST["category"]
         title = request.POST["title"]
         description = request.POST["description"]
         link = request.POST["link"]
-        time = request.POST["estimated_time_mins"]
-        reward = request.POST["reward"]
 
-        task = Task.objects.create(
+        try:
+            reward = int(request.POST.get("reward"))
+        except (ValueError, TypeError):
+            messages.error(request, "Invalid reward amount. Reward must be in Number")
+            return redirect("base:create-task")
+
+        try:
+            minutes = int(request.POST.get("estimated_time_mins"))
+        except (ValueError, TypeError):
+            messages.error(request, "must be number")
+            return redirect("base:create-task")
+
+        try:
+            quantity = int(request.POST.get("amount_tasker"))
+        except (ValueError, TypeError):
+            messages.error(request, "Invalid amount")
+            return redirect("base:create-task")
+
+        task_order = reward * quantity
+
+        if user_wallet_balance < task_order:
+            messages.error(request, "insufficient amount in wallet. Please! deposit to continue")
+            return redirect("base:create-task")
+        elif task_order <= 0:
+            messages.error(request, "amount of workers or how much you are willing to pay must be greater than 0")
+            return redirect("base:create-task")
+        else:
+            task = Task.objects.create(
             creator= user,
             category=category,
             title = title,
             description = description,
             link = link,
-            estimated_time_mins = time,
+            estimated_time_mins = minutes,
             reward = reward,
             is_active = True
-        )
-        task.save()
-        return redirect("base:dashboard")
+            )
+            task.save()
+            return redirect("base:dashboard")
 
     return render(request, "base/create_task.html", {"form" : form})
 
@@ -192,16 +227,38 @@ def withdraw(request):
     withdraws = Withdrawal.objects.all()
 
     if request.method == "POST":
-        amount = request.POST.get("amount")
+        action = request.POST.get("action")
+        user_balance = user.userprofile.balance
+       
 
-        withdraw = Withdrawal.objects.create(
-            user = user,
-            amount = amount,
-            status = "pending"
-        )
-        withdraw.save()
-        return redirect("base:withdraw")
-
+        if action == "withdraw":
+            try:
+                amount = int(request.POST.get("amount"))
+            except (ValueError, TypeError):
+                messages.error(request, "Invalid amount")
+                return redirect("base:withdraw")
+        
+            if amount > user_balance:
+                messages.error(request, "Amount cannot be greater than your wallet balance")
+            elif amount < 5000:
+                messages.error(request, "Amount cannot be less than 5000")
+            else:
+                withdraw = Withdrawal.objects.create(user=user, amount=amount, status="pending")
+                withdraw.save()
+                messages.success(request, "withdrawer request submited")
+                return redirect("base:withdraw")
+        else:
+            try:
+                move_amount = int(request.POST.get("move_amount"))
+            except (ValueError, TypeError):
+                messages.error(request, "Invalid amount")
+                return redirect("base:withdraw")
+            
+            user.userprofile.balance += move_amount
+            user.userprofile.task_earning -= move_amount
+            user.userprofile.save()
+            messages.success(request, "transfer successfully")
+            return redirect("base:withdraw")
 
 
     return render(request, "base/withdraw.html", {"withdraws" : withdraws})
@@ -214,6 +271,11 @@ def account(request):
     user = request.user
     streaks = get_login_streak(user)
     request.user.userprofile.streak += streaks
+
+    try:
+        account_detail = UserAccountDetail.objects.get(user=user)
+    except UserAccountDetail.DoesNotExist:
+        account_detail = None
 
     if request.method == "POST":
         full_name = request.POST.get("full_name")
@@ -232,7 +294,8 @@ def account(request):
 
 
     context = {
-        "state" : state
+        "state" : state,
+        "account_detail": account_detail
     }
     return render(request, "base/account_settings.html", context)
 
@@ -275,4 +338,4 @@ def reject(request, pk):
         task.status = "rejected"
         task.save()
         return redirect("base:task-review")
-    return render(request, "base/task_review.html", {"user_tasks" : user_tasks})
+    return render(request, "base/task_review.html", {"task" : task})

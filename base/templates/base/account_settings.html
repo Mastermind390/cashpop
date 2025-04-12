@@ -17,7 +17,7 @@
         
         <div class="profile-tab-content" id="settings">
             <h2>Account Settings</h2>
-            {% if request.user.useraccountdetail is None %}
+            {% if not account_detail %}
             <form class="settings-form" method="POST">
               {% csrf_token %}
               <div class="form-group">
@@ -54,15 +54,15 @@
             <div>
                 <div class="form-group">
                     <label for="profile-name">Account Number</label>
-                    <h4> {{request.user.useraccountdetail.account_number}} </h4>
+                    <h4> {{ account_detail.account_number }} </h4>
                   </div>
                   <div class="form-group">
                     <label for="profile-email">Bank Name</label>
-                    <h4> {{request.user.useraccountdetail.bank_name}} </h4>
+                    <h4> {{ account_detail.bank_name }} </h4>
                   </div>
                   <div class="form-group">
                     <label for="profile-paypal">Full Name</label>
-                    <h4> {{request.user.useraccountdetail.full_name}} </h4>
+                    <h4> {{ account_detail.full_name }} </h4>
                   </div>
                   {% comment %} <input class="start-link" type="submit" value="Save"> {% endcomment %}
             </div>

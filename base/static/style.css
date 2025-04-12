@@ -1723,4 +1723,23 @@ ul, ol {
   margin-bottom: 20px;
 }
 
+.earning-transfer {
+  padding: 10px;
+}
+
+.earning-transfer input {
+  padding: 10px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+}
+
+.earning-transfer input:focus {
+  outline: none;
+}
+
+.earning-transfer p {
+  font-size: small;
+  font-weight: 700;
+}
+
  

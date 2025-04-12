@@ -14,7 +14,8 @@ class TaskForm(ModelForm):
             "category" : "Category",
             "link" : "Link to Social media or Website",
             "estimated_time_mins" : "Estimated Time (mins)",
-            "reward" : "Reward"
+            "reward" : "How much you are willing to pay per task",
+            "amount_tasker" : "Number of taskers you need",
         }
         widgets = {
             "title": forms.TextInput(attrs={"placeholder": "enter the title of your task"}),

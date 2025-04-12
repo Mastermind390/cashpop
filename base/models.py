@@ -20,6 +20,7 @@ class Task(models.Model):
     link = models.URLField(max_length=500, default="")
     estimated_time_mins = models.PositiveIntegerField(default=0)
     reward = models.PositiveIntegerField(default=0)
+    amount_tasker = models.PositiveIntegerField(default=0)
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
@@ -96,3 +97,6 @@ class Withdrawal(models.Model):
     amount = models.PositiveBigIntegerField(default=0)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
     requested_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.first_name}, {self.amount}"

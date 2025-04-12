@@ -9,7 +9,7 @@
     <div class="container">
       <div class="dashboard-text-container">
         <h1 class="page-title">Dashboard</h1>
-        <h3>Welcome back {{request.user.first_name.capitalize}} </h3>
+        <h3>Welcome S{{request.user.email.capitalize}} </h3>
       </div>
       
       <!-- Stats -->
@@ -19,7 +19,7 @@
           <div class="stat-card-content">
             <h3>Total Earned</h3>
             <p class="stat-value">&#8358;{{user.userprofile.total_reward}}</p>
-            <p class="stat-trend up">↑ $12.50 this week</p>
+            <!-- <p class="stat-trend up">↑ $12.50 this week</p> -->
           </div>
         </div>
         <div class="stat-card">
@@ -42,7 +42,7 @@
           <div class="stat-card-content">
             <h3>Available Tasks</h3>
             <p class="stat-value">{{total_available_tasks}}</p>
-            <p class="stat-trend up">↑ 8 new today</p>
+            <!-- <p class="stat-trend up">↑ 8 new today</p> -->
           </div>
         </div>
       </div>

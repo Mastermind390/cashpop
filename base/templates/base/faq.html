@@ -1,4 +1,5 @@
-{% extends "base/main.html" %}
+{% extends "base/main.html" %}'
+{% load static %}
 {% block title %}FAQ - CashPop{% endblock title %}
 
 {% block content %}
@@ -9,18 +10,6 @@
     <div class="faq-header">
       <h1 class="page-title">Frequently Asked Questions</h1>
       <p class="faq-description">Find answers to common questions about CashPop</p>
-      <div class="faq-search">
-        <input type="text" placeholder="Search for a question..." id="faqSearch">
-        <button class="btn-search">🔍</button>
-      </div>
-    </div>
-    
-    <div class="faq-categories">
-      <button class="faq-category active" data-category="all">All</button>
-      <button class="faq-category" data-category="account">Account & Profile</button>
-      <button class="faq-category" data-category="tasks">Tasks & Rewards</button>
-      <button class="faq-category" data-category="payments">Payments & Withdrawals</button>
-      <button class="faq-category" data-category="technical">Technical Issues</button>
     </div>
     
     <div class="faq-accordion">
@@ -158,54 +147,8 @@
 </main>
 
 <!-- Footer -->
-<footer class="footer">
-  <div class="container">
-    <div class="footer-content">
-      <div class="footer-logo">
-        <span class="logo-icon">✨</span>
-        <span class="logo-text">CashPop</span>
-      </div>
-      <div class="footer-links">
-        <div class="footer-links-column">
-          <h3>Company</h3>
-          <ul>
-            <li><a href="about.html">About Us</a></li>
-            <li><a href="#">Careers</a></li>
-            <li><a href="#">Press</a></li>
-            <li><a href="#">Blog</a></li>
-          </ul>
-        </div>
-        <div class="footer-links-column">
-          <h3>Resources</h3>
-          <ul>
-            <li><a href="faq.html">FAQ</a></li>
-            <li><a href="#">Support</a></li>
-            <li><a href="#">Task Guidelines</a></li>
-            <li><a href="#">Community</a></li>
-          </ul>
-        </div>
-        <div class="footer-links-column">
-          <h3>Legal</h3>
-          <ul>
-            <li><a href="#">Privacy Policy</a></li>
-            <li><a href="#">Terms of Service</a></li>
-            <li><a href="#">Cookie Policy</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>&copy; 2023 CashPop. All rights reserved.</p>
-      <div class="social-links">
-        <a href="#" class="social-link">Facebook</a>
-        <a href="#" class="social-link">Twitter</a>
-        <a href="#" class="social-link">Instagram</a>
-      </div>
-    </div>
-  </div>
-</footer>
 
-<script src="js/faq.js"></script>
+<script src=" {% static "js/faq.js" %} "></script>
 <script src="js/main.js"></script>
 
 {% endblock content %}
