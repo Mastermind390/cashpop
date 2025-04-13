@@ -7,6 +7,12 @@ from .forms import TaskForm
 from .models import UserProfile, UserTask, Task, UserAccountDetail, Withdrawal
 from .streak import get_login_streak
 from django.db import transaction
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
+from django.core.mail import send_mail
+from django.conf import settings
+from .forms import PasswordResetRequestForm, SetNewPasswordForm
 
 
 
@@ -84,6 +90,56 @@ def logoutPage(request):
 
 def faqPage(request):
     return render(request, "base/faq.html")
+
+def forgot_password_request(request):
+    if request.method == 'POST':
+        form = PasswordResetRequestForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            try:
+                user = User.objects.get(username=email)
+                uid = urlsafe_base64_encode(force_bytes(user.pk))
+                token = default_token_generator.make_token(user)
+                reset_link = request.build_absolute_uri(
+                    f'/reset-password/{uid}/{token}/'
+                )
+
+                # Email the reset link
+                send_mail(
+                    subject='Password Reset Request',
+                    message=f'Click the link to reset your password: {reset_link}',
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipient_list=[email],
+                    fail_silently=False,
+                )
+            except User.DoesNotExist:
+                pass  # Don't reveal that the email doesn't exist
+            return render(request, 'base/password_reset_sent.html')
+    else:
+        form = PasswordResetRequestForm()
+    return render(request, 'base/forgot_password.html', {'form': form})
+
+
+def reset_password(request, uidb64, token):
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except (User.DoesNotExist, ValueError, TypeError, OverflowError):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        if request.method == 'POST':
+            form = SetNewPasswordForm(request.POST)
+            if form.is_valid():
+                user.set_password(form.cleaned_data['new_password'])
+                user.save()
+                return render(request, 'base/password_reset_complete.html')
+        else:
+            form = SetNewPasswordForm()
+        return render(request, 'base/reset_password.html', {'form': form})
+    else:
+        return render(request, 'base/invalid_link.html')
+
 
 @login_required(login_url="base:login")
 def dashboard(request):

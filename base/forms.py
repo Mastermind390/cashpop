@@ -25,3 +25,18 @@ class TaskForm(ModelForm):
             "estimated_time_mins": forms.NumberInput(attrs={"placeholder": "estimated time to finish the task"}),
             "reward": forms.NumberInput(attrs={"placeholder": "enter the amount you are will to pay per task"}),
         }
+
+
+
+class PasswordResetRequestForm(forms.Form):
+    email = forms.EmailField()
+
+class SetNewPasswordForm(forms.Form):
+    new_password = forms.CharField(widget=forms.PasswordInput)
+    confirm_password = forms.CharField(widget=forms.PasswordInput)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        if cleaned_data.get('new_password') != cleaned_data.get('confirm_password'):
+            raise forms.ValidationError("Passwords do not match.")
+        return cleaned_data

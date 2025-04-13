@@ -1744,3 +1744,52 @@ ul, ol {
 }
 
  
+.forgot-password {
+  margin: 30px 0;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: center;
+}
+
+.forgot-password h2 {
+  color: red;
+}
+
+.forgot-password input {
+  padding: 10px;
+}
+
+.forgot-password button {
+  padding: 10px;
+  background-color: #7e69ab;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.forgot-password input:focus {
+  outline: none;
+}
+
+.confirm {
+  display: flex;
+  justify-content: center;
+  margin: 70px;
+}
+
+.reset {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  margin: 70px 0;
+}
+
+.reset button {
+  padding: 10px;
+  background-color: #7e69ab;
+  color: white;
+  border: none;
+  cursor: pointer;
+}

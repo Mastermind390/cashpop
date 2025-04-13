@@ -1,0 +1,14 @@
+{% extends "base/main.html" %}
+
+{% block title %}CashPop - Invalid Link{% endblock title %}
+
+{% block content %}
+
+<main>
+    <div class="reset">
+        <p>Your password has been reset. You can now <a href=" {% url "base:login" %} ">login</a>.</p>
+    </div>
+</main>
+
+
+{% endblock content %}
