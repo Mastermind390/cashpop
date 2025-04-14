@@ -27,12 +27,13 @@ load_dotenv(dotenv_path=BASE_DIR / ".env")
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 PAYSTACK_SECRET_KEY = os.getenv("PAYSTACK_SECRET_KEY")
-PAYSTACK_CALLBACK_URL = 'http://yourdomain.com/payment/callback/'
+# PAYSTACK_CALLBACK_URL = 'http://yourdomain.com/payment/callback/'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG") == "True"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["c00c-102-134-16-210.ngrok-free.app", 'localhost', '127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ["https://c00c-102-134-16-210.ngrok-free.app"]
 
 # AUTH_USER_MODEL = 'base.User'
 # Application definition

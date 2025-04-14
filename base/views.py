@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import TaskForm
-from .models import UserProfile, UserTask, Task, UserAccountDetail, Withdrawal
+from .models import UserProfile, UserTask, Task, UserAccountDetail, Withdrawal, Deposit
 from .streak import get_login_streak
 from django.db import transaction
 from django.contrib.auth.tokens import default_token_generator
@@ -13,6 +13,12 @@ from django.utils.encoding import force_bytes, force_str
 from django.core.mail import send_mail
 from django.conf import settings
 from .forms import PasswordResetRequestForm, SetNewPasswordForm
+import json
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse, HttpResponse, HttpResponseBadRequest
+import hashlib
+import hmac
+import requests
 
 
 
@@ -150,11 +156,6 @@ def dashboard(request):
     usertask = UserTask.objects.filter(user=user, status="approved")
     total_user_task = usertask.count()
     
-    # Update streaks
-    streaks = get_login_streak(user)
-    userprofile.streak += streaks
-    # userprofile.save()
-    
     # Get completed task IDs
     completed_task_ids = usertask.values_list("task_id", flat=True)
     
@@ -283,12 +284,13 @@ def task_details(request, pk):
     }
     return render(request, "base/task_details.html", context)
 
+
 @login_required(login_url="base:login")
 def withdraw(request):
     user = request.user
-    streaks = get_login_streak(user)
-    userprofile = user.userprofile
-    userprofile.streak += streaks
+    # streaks = get_login_streak(user)
+    # userprofile = user.userprofile
+    # userprofile.streak += streaks
     # userprofile.save()
     withdraws = Withdrawal.objects.all()
 
@@ -320,23 +322,31 @@ def withdraw(request):
                 messages.error(request, "Invalid amount")
                 return redirect("base:withdraw")
             
-            user.userprofile.balance += move_amount
-            user.userprofile.task_earning -= move_amount
-            user.userprofile.save()
-            messages.success(request, "transfer successfully")
-            return redirect("base:withdraw")
+            if user.userprofile.task_earning >= move_amount:
+                user.userprofile.balance += move_amount
+                user.userprofile.task_earning -= move_amount
+                user.userprofile.save()
+                messages.success(request, "transfer successfully")
+                return redirect("base:withdraw")
+            else:
+                 messages.error(request, "insufficient balance")
+                 return redirect("base:withdraw")
 
 
     return render(request, "base/withdraw.html", {"withdraws" : withdraws})
 
+
+def deposit(request):
+
+    return render(request, "base/deposit.html")
 
 
 @login_required(login_url="base:login")
 def account(request):
     state = "not-edit"
     user = request.user
-    streaks = get_login_streak(user)
-    request.user.userprofile.streak += streaks
+    # streaks = get_login_streak(user)
+    # request.user.userprofile.streak += streaks
 
     try:
         account_detail = UserAccountDetail.objects.get(user=user)
@@ -430,3 +440,69 @@ def reject(request, pk):
         task.save()
         return redirect("base:task-review")
     return render(request, "base/task_review.html", {"task" : task})
+
+
+def initialize_payment(request):
+    if request.method == 'POST':
+        amount = int(request.POST.get('amount'))
+        email = request.user.username  # or however you want to get the email
+
+        headers = {
+            "Authorization": f"Bearer {settings.PAYSTACK_SECRET_KEY}",
+            "Content-Type": "application/json",
+        }
+
+        data = {
+            "email": email,
+            "amount": amount * 100,  # Paystack works in kobo
+            "callback_url": "https://c00c-102-134-16-210.ngrok-free.app/webhook/paystack/",
+        }
+
+        response = requests.post('https://api.paystack.co/transaction/initialize', headers=headers, json=data)
+        response_data = response.json()
+
+        if response_data.get('status'):
+            payment_url = response_data['data']['authorization_url']
+            return redirect(payment_url)
+        else:
+            return JsonResponse({'error': 'Payment initialization failed'}, status=400)
+
+
+
+@csrf_exempt
+@login_required(login_url="base:login")
+def paystack_webhook(request):
+    print("webhook triggered")
+    if request.method != 'POST':
+        return HttpResponseBadRequest("Invalid request")
+
+    secret = settings.PAYSTACK_SECRET_KEY.encode('utf-8')
+    signature = request.headers.get('x-paystack-signature')
+    payload = request.body
+    computed_signature = hmac.new(secret, msg=payload, digestmod=hashlib.sha512).hexdigest()
+
+    if signature != computed_signature:
+        return HttpResponseBadRequest("Invalid signature")
+
+    data = json.loads(payload)
+    event = data.get('event')
+
+    if event == 'charge.success':
+        payment_data = data['data']
+        reference = payment_data['reference']
+        amount_paid = int(payment_data['amount']) // 100  # Convert from kobo to naira
+
+        try:
+            deposit = Deposit.objects.get(reference=reference, status='pending')
+            deposit.status = 'completed'
+            deposit.save()
+
+            # Update user balance
+            profile = UserProfile.objects.get(user=deposit.user)
+            profile.balance += amount_paid
+            profile.save()
+
+        except Deposit.DoesNotExist:
+            return JsonResponse({'error': 'Deposit not found'}, status=404)
+
+    return JsonResponse({'status': 'success'}, status=200)

@@ -1,0 +1,61 @@
+{% extends "base/main.html" %}
+{% block title %}Profile - CashPop{% endblock title %}
+
+{% block content %}
+
+<!-- Profile Content -->
+<main class="profile">
+  <div class="container">
+    <h1 class="page-title">My Profile</h1>
+    
+    <div class="profile-container">
+      {% include "base/profile_sidebar.html" %}
+      
+      <div class="profile-main">
+        {% include "base/profile_nav_links.html" %}
+        
+        <div>
+          <div class="profile-tab-content" id="payments">
+          <h2>Deposit</h2>
+
+          <div class="payment-history">
+            <div class="payment-history-item">
+              <form action="{% url 'base:initialize_payment' %}" method="POST">
+                {% csrf_token %}
+                <label for="amount">Amount to deposit</label><br>
+                <input type="text" name="amount"><br>
+                <button type="submit">Deposit</button>
+              </form>
+            </div>
+            <!-- <div>
+              <h3>Deposit History</h3>
+              {% for withdraw in withdraws %}
+              {% if withdraw.user == request.user %}
+              <div class="withdraw-wrapper">
+                <div class="amount-container">
+                  <h4>&#8358;{{withdraw.amount}}</h4>
+                  <h5>{{withdraw.requested_at | time}}</h5>
+                </div>
+                <div>
+                  {% if withdraw.status == pending %}
+                  <h5  class="status-pending"> {{withdraw.status}} </h5>
+                  {% else %}
+                  <h5  class="status-completed"> {{withdraw.status}} </h5>
+                  {% endif %}
+                </div>
+              </div>
+              {% endif %}
+              
+              {% endfor %}
+            </div> -->
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="js/profile.js"></script>
+<script src="js/main.js"></script>
+{% endblock content %}
