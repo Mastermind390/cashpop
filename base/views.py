@@ -264,6 +264,9 @@ def createTask(request):
 @login_required(login_url="base:login")
 def task_details(request, pk):
     task = get_object_or_404(Task, title=pk)
+    user = User.objects.get(id=request.user.id)
+    usertask = UserTask.objects.filter(user=user, status="pending")
+    pending_task_ids = usertask.values_list("task_id", flat=True)
 
     if request.method == "POST":
         proof_username = request.POST.get("proof")
@@ -281,9 +284,13 @@ def task_details(request, pk):
 
     context = {
         "task" : task,
+        "pending_task_ids" : pending_task_ids,
     }
     return render(request, "base/task_details.html", context)
 
+def deposit(request):
+
+    return render(request, "base/deposit.html")
 
 @login_required(login_url="base:login")
 def withdraw(request):
@@ -334,11 +341,6 @@ def withdraw(request):
 
 
     return render(request, "base/withdraw.html", {"withdraws" : withdraws})
-
-
-def deposit(request):
-
-    return render(request, "base/deposit.html")
 
 
 @login_required(login_url="base:login")
@@ -407,17 +409,21 @@ def approve(request, pk):
 
         # Check if the creator has enough locked balance
         creator_profile = task.task.creator.userprofile
-        if creator_profile.locked_balance < task.task.reward:
-            messages.error(request, "Insufficient locked balance to approve this task.")
-            return redirect("base:task-review")
+        # if creator_profile.locked_balance < task.task.reward:
+        #     messages.error(request, "Insufficient locked balance to approve this task.")
+        #     return redirect("base:task-review")
 
         # 1. Approve the user task
         task.status = "approved"
-        task.task.amount_tasker -= 1
+        # task.task.amount_tasker -= 1
+        task.task.num_of_completed += 1
         creator_profile.locked_balance -= task.task.reward
         task.save()
         task.task.save()
         creator_profile.save()
+
+        if task.task.num_of_completed >= task.task.amount_tasker:
+            task.task.is_active = False
 
         # 2. Update the user profile earnings
         user_profile = task.user.userprofile
@@ -480,6 +486,9 @@ def paystack_webhook(request):
     signature = request.headers.get('x-paystack-signature')
     payload = request.body
     computed_signature = hmac.new(secret, msg=payload, digestmod=hashlib.sha512).hexdigest()
+
+    print(signature)
+    print(computed_signature)
 
     if signature != computed_signature:
         return HttpResponseBadRequest("Invalid signature")

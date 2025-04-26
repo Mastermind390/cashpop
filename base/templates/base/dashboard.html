@@ -1,5 +1,5 @@
 {% extends "base/main.html" %}
-
+{% load static %}
 {% block title %}Dashboard - CashPop{% endblock title %}
 
 {% block content %}
@@ -70,11 +70,11 @@
       <!-- Tasks List -->
       <div class="tasks-grid">
         {% for task in available_tasks %}
-       {% if task.usertask.status != "approved" %}
+       {% if task.usertask.status != "approved" and task.num_of_completed < task.amount_tasker %}
        <div class="task-card" data-category="social">
         <div class="task-card-header">
           <span class="task-badge social">{{task.category | lower}}</span>
-          <span class="task-badge difficulty easy">{{task.amount_tasker}}</span>
+          <span class="task-badge difficulty easy"> {{task.num_of_completed}} / {{task.amount_tasker}}</span>
         </div>
         <h3 class="task-title">{{task.title}}</h3>
         <p class="task-description">{{task.description}}</p>
@@ -157,7 +157,7 @@
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="js/dashboard.js"></script>
+  <script src="{% static "static/js/dashboard.js" %}"></script>
   <script src="js/main.js"></script>
 
 

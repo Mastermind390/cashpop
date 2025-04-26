@@ -1,0 +1,47 @@
+<section>
+  <div class="mobile-elements" id="dropdown-content">
+    {% if request.user.is_authenticated %}
+    <div>
+      <div class="nav-text-container">
+        <p class="balance-label">Wallet: <span class="balance-amount">&#8358;{{request.user.userprofile.balance}}</span></p>
+      </div>
+      <div class="nav-text-container">
+        <p class="balance-label">Task Earnings: <span class="balance-amount">&#8358;{{request.user.userprofile.task_earning}}</span></p>
+      </div>
+      <div class="nav-text-container">
+        <p class="balance-label">Locked Balance: <span class="balance-amount">&#8358;{{request.user.userprofile.locked_balance}}</span></p> 
+      </div>
+    </div>
+    <div>
+        <div class="nav-text-container">
+            <a href=" {% url "base:profile" %} " > Profile </a> <br> 
+        </div>
+        <div class="nav-text-container">
+            <a href="{% url "base:dashboard" %}">Dashboard</a><br> 
+        </div>
+        <div class="nav-text-container">
+            <a href="{% url "base:create-task" %}">Create task</a> 
+        </div>
+        <div class="nav-text-container">
+            <a href="{% url "base:logout" %}">Logout</a> 
+        </div>
+    </div>
+    {% else %}
+    <div>
+      <div>
+          <div class="nav-text-container">
+              <a href=" {% url "base:home" %} " > Home </a> <br> 
+          </div>
+          <div class="nav-text-container">
+              <a href="{% url "base:dashboard" %}">Register</a><br> 
+          </div>
+          <div class="nav-text-container">
+              <a href="{% url "base:create-task" %}">Login</a> 
+          </div>
+          <div class="nav-text-container">
+              <a href="{% url "base:logout" %}">FAQ</a> 
+          </div>
+      </div>
+    {% endif %}
+</div>
+</section>

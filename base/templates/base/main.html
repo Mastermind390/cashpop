@@ -9,24 +9,27 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
-  <body>
-    
-    {% include "base/header.html" %}
 
-
-    {% if messages %}
+<body>
+  
+  {% include "base/header.html" %}
+  
+  {% include "base/mobile_navbar.html" %}
+  {% if messages %}
   <ul class="messages">
       {% for message in messages %}
       <li>{{ message }}</li>
       {% endfor %}
   </ul>
   {% endif %}
-    {% block content %}
-    
-    
-    
-    {% endblock content %}
-    <!-- Footer -->
+
+  {% block content %}
+  
+  
+  
+  {% endblock content %}
+
+  <!-- Footer -->
   {% if request.user.is_authenticated %}
   <footer></footer>
   {% else %}
@@ -77,5 +80,7 @@
     </div>
   </footer>
   {% endif %}
-  </body>
+  
+  <script src=" {% static "js/main.js" %} "></script>
+</body>
 </html>

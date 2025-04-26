@@ -1,14 +1,10 @@
 
 // Mobile menu toggle
 document.addEventListener('DOMContentLoaded', function() {
-  const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+  // const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
   const header = document.querySelector('.header');
   
-  if (mobileMenuToggle) {
-    mobileMenuToggle.addEventListener('click', function() {
-      header.classList.toggle('mobile-menu-active');
-    });
-  }
+  
   
   // Notification button popover (placeholder for future implementation)
   const notificationButton = document.querySelector('.btn-notification');
@@ -35,4 +31,28 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   });
+});
+
+let dropDownBtn = document.getElementById("dropdown-button")
+let dropDownContent = document.getElementById("dropdown-content")
+// dropDownBtn.addEventListener("click", ()=>{
+//   let computedStyle = window.getComputedStyle(dropDownContent);
+//   if (computedStyle.display === "none") {
+//     dropDownContent.style.display = "block";
+//   } else {
+//     dropDownContent.style.display = "none";
+//   }
+//   console.log(computedStyle)
+// })
+
+dropDownBtn.addEventListener("click", (event) => {
+  event.stopPropagation(); // Prevent click from bubbling to document
+  dropDownContent.classList.toggle("active");
+});
+
+// Close dropdown when clicking outside
+document.addEventListener("click", (event) => {
+  if (!dropDownContent.contains(event.target) && !dropDownBtn.contains(event.target)) {
+    dropDownContent.classList.remove("active");
+  }
 });

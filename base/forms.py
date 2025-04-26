@@ -7,7 +7,7 @@ from .models import Task
 class TaskForm(ModelForm):
     class Meta:
         model = Task
-        exclude = ["creator", "participants", "is_active"]
+        exclude = ["creator", "participants", "is_active", "num_of_completed"]
         labels = {
             'title': 'Title',
             'description': 'Description',

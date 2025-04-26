@@ -86,4 +86,18 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
   }
+
+
 });
+
+let dropDownBtn = document.getElementById("dropdown-button")
+let dropDownContent = document.getElementById("dropdown-content")
+
+dropDownBtn.addEventListener("click", ()=>{
+  if (dropDownContent.style.display == "none") {
+    dropDownContent.style.display == "block"
+  } else {
+    dropDownContent.style.display == "none"
+  }
+  console.log("it working")
+})

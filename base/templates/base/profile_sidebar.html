@@ -1,8 +1,5 @@
 <div class="profile-sidebar">
     <div class="profile-card">
-      {% comment %} <div class="profile-avatar large">
-        <span>U</span>
-      </div> {% endcomment %}
       <h2 class="profile-name">{{request.user.first_name.capitalize}}</h2>
       <p class="profile-email">{{request.user.username}}</p>
       <p class="profile-member-since">{{request.user.userprofile.date_joined | timesince}}</p>
@@ -17,10 +14,6 @@
         <h3>Tasks Completed</h3>
         <p>{{request.user.userprofile.total_task_completed}}</p>
       </div>
-      <!-- <div class="profile-stat-item">
-        <h3>Current Streak</h3>
-        <p>{{request.user.userprofile.streak}} days</p>
-      </div> -->
     </div>
     
     <div class="profile-actions">

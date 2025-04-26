@@ -26,7 +26,11 @@
                     <div class="task-description-container">
                         <p>{{task.description}}</p><br><br>
                         {% if task.creator != request.user %}
+                        {% if task.id not in pending_task_ids %}
                         <a class="start-link" href="{{task.link}}">Start Task</a>
+                        {% else %}
+                        <button class = "pending-disabled-button" disabled="disabled">pending review</button>
+                        {% endif %}
                         {% endif %}
                         <br>
                         <br>
@@ -42,7 +46,11 @@
                             <input class="image-input" type="file" name="screenshot" id="">
                             <br>
                             <br>
+                            {% if task.id not in pending_task_ids %}
                             <input class="start-link" type="submit" value="Submit Proof">
+                            {% else %}
+                            <button class = "pending-disabled-button" disabled="disabled">pending review</button>
+                            {% endif %}
                         </form>
                         {% endif %}
                     </div>

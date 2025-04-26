@@ -19,6 +19,7 @@ class Task(models.Model):
     description = models.TextField()
     link = models.URLField(max_length=500, default="")
     estimated_time_mins = models.PositiveIntegerField(default=0)
+    num_of_completed = models.PositiveIntegerField(default=0)
     reward = models.PositiveIntegerField(default=0)
     amount_tasker = models.PositiveIntegerField(default=0)
     is_active = models.BooleanField(default=True)

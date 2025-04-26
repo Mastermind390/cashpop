@@ -15,14 +15,16 @@
         <div class="dashboard-link-container">
           <a href="{% url "base:dashboard" %}">Dashboard</a>
           <a href="{% url "base:create-task" %}">Create task</a>
+          <a href="{% url "base:profile" %}">Profile</a>
+          <a class="logout-link" href=" {% url "base:logout" %} ">logout</a>
         </div>
 
         <div class="header-actions">         
           <div class="balance">
-            <button class="btn-notification">
+            <!-- <button class="btn-notification">
               <span class="notification-icon">🔔</span>
               <span class="notification-badge">3</span>
-            </button>
+            </button> -->
             <span class="balance-icon">💰</span>
             <div>
               <div>
@@ -40,14 +42,9 @@
                 <span class="balance-amount">&#8358;{{request.user.userprofile.locked_balance}}</span>
               </div>
             </div>
-            
-            
-            <a href=" {% url "base:profile" %} " class="avatar">
-              <span>{{request.user.first_name.capitalize|slice:"0:1"}}</span>
-            </a>
-            <a href="{% url "base:logout" %}">Logout</a>
           </div>
         </div>
+
         {% else %}
         <nav class="main-nav">
           <ul>
@@ -57,11 +54,14 @@
           </ul>
         </nav>
         {% endif %}
-        <button class="mobile-menu-toggle">
+        {% include "base/mobile_navbar.html" %}
+        <button class="mobile-menu-toggle" id="dropdown-button">
           <span></span>
           <span></span>
           <span></span>
         </button>
+        
+        
       </div>
     </div>
   </header>
