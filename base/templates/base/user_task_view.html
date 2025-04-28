@@ -1,0 +1,47 @@
+{% extends "base/main.html" %}
+{% block title %}Profile - CashPop{% endblock title %}
+
+{% block content %}
+
+<!-- Profile Content -->
+<main class="profile">
+  <div class="container">
+    <h1 class="page-title">My Profile</h1>
+    
+    <div class="profile-container">
+      {% include "base/profile_sidebar.html" %}
+      
+      <div class="profile-main">
+        {% include "base/profile_nav_links.html" %}
+        
+        <div>
+          <div class="profile-tab-content" id="payments">
+          <h2>Review Tasks</h2>
+          {% for task in tasks %}
+          <div class="proof-container">
+            <div>
+              <h4 class="task-title">{{task.title}}</h4>
+              <span class="task-created">{{task.created_at | timesince}} ago</span>
+            </div>
+            <div>
+              <span class="task-badge difficulty easy">{{task.num_of_completed}} / {{task.amount_tasker}}</span> <br>
+              {% if  task.num_of_completed >= task.amount_tasker %}
+              <span class="task-complete">complete</span>
+              {% else %}
+              <span class="task-running">running</span>
+              {% endif %}
+            </div>
+
+           
+          </div>
+          {% endfor %}
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="js/profile.js"></script>
+<script src="js/main.js"></script>
+{% endblock content %}

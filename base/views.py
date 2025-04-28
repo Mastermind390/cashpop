@@ -288,6 +288,7 @@ def task_details(request, pk):
     }
     return render(request, "base/task_details.html", context)
 
+@login_required(login_url="base:login")
 def deposit(request):
 
     return render(request, "base/deposit.html")
@@ -314,9 +315,11 @@ def withdraw(request):
                 return redirect("base:withdraw")
         
             if amount > user_balance:
-                messages.error(request, "Amount cannot be greater than your wallet balance")
+                messages.error(request, "insufficient wallet balance")
+                return redirect("base:withdraw")
             elif amount < 5000:
                 messages.error(request, "Amount cannot be less than 5000")
+                return redirect("base:withdraw")
             else:
                 withdraw = Withdrawal.objects.create(user=user, amount=amount, status="pending")
                 withdraw.save()
@@ -379,7 +382,7 @@ def account(request):
 
 @login_required(login_url="base:login")
 def task_review(request):
-    user_tasks = get_list_or_404(UserTask)
+    user_tasks = UserTask.objects.filter(task__creator=request.user)
 
     user = request.user
     streaks = get_login_streak(user)
@@ -515,3 +518,15 @@ def paystack_webhook(request):
             return JsonResponse({'error': 'Deposit not found'}, status=404)
 
     return JsonResponse({'status': 'success'}, status=200)
+
+
+@login_required(login_url="base:login")
+def userTasksview(request):
+    user = request.user
+    tasks = Task.objects.filter(creator=user)
+
+    context = {
+        "tasks" : tasks,
+    }
+
+    return render(request, "base/user_task_view.html", context)

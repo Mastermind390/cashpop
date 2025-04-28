@@ -23,6 +23,7 @@ class Task(models.Model):
     reward = models.PositiveIntegerField(default=0)
     amount_tasker = models.PositiveIntegerField(default=0)
     is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.title

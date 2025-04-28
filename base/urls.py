@@ -1,6 +1,6 @@
 from django.urls import path, reverse_lazy
 from django.contrib.auth import views as auth_views
-from .views import home, registerPage, loginPage, faqPage, dashboard, logoutPage, profile, createTask, task_details, withdraw, deposit, account, task_review, approve, reject, reset_password, forgot_password_request, paystack_webhook, initialize_payment
+from .views import home, registerPage, loginPage, faqPage, dashboard, logoutPage, profile, createTask, task_details, withdraw, deposit, account, task_review, approve, reject, reset_password, forgot_password_request, paystack_webhook, initialize_payment, userTasksview
 
 app_name = 'base'
 
@@ -17,7 +17,8 @@ urlpatterns = [
     path("withdraw/", withdraw, name="withdraw"),
     path("deposit/", deposit, name="deposit"),
     path("account_settings", account, name="account"),
-    path("task-review", task_review, name="task-review"),
+    path("task-review", task_review, name="task-review"), 
+    path("task-views", userTasksview, name="task-views"),
     path("confirm-approve/<int:pk>", approve, name="confirm-approve"),
     path("confirm-reject/<int:pk>", reject, name="confirm-reject"),
     path('forgot-password/', forgot_password_request, name='forgot_password'),

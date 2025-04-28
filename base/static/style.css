@@ -1713,6 +1713,7 @@ ul, ol {
   padding: 15px;
   align-items: center;
   margin-bottom: 10px;
+  max-width: 100%;
 }
 
 
@@ -1876,4 +1877,48 @@ ul, ol {
 
 .pending-disabled-button {
   padding: 10px;
+}
+
+.task-title-container {
+  display: flex;
+  align-items: center;
+  background-color: #c6eed7;
+}
+
+.task-title {
+  margin: 0;
+}
+
+.task-created {
+  font-size: small;
+  margin: 0;
+}
+
+.task-complete {
+  color: green;
+  font-size: small;
+  background-color: rgb(223, 223, 223);
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.task-running {
+  color: orange;
+  font-size: small;
+  background-color: rgb(223, 223, 223);
+  padding: 5px;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.messages {
+  display: flex;
+  justify-content: center;
+}
+
+.messages li {
+  color: red;
+  text-decoration: none;
+  list-style-type: none;
+  padding: 0;
 }
