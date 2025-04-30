@@ -19,6 +19,12 @@ from django.http import JsonResponse, HttpResponse, HttpResponseBadRequest
 import hashlib
 import hmac
 import requests
+from django.contrib.auth.tokens import default_token_generator
+from django.urls import reverse
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+
 
 
 
@@ -60,13 +66,56 @@ def registerPage(request):
                     last_name=last_name,
                     email=user_name 
             )
+            user.is_active = False
             user.save()
-            login(request, user)
-            return redirect("base:dashboard")
+
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+            token = default_token_generator.make_token(user)
+            activation_link = request.build_absolute_uri(
+                reverse('base:activate', kwargs={'uidb64': uid, 'token': token})
+            )
+
+             # Prepare and send HTML email
+            subject = 'Activate Your Account'
+            from_email = 'noreply@example.com'
+            to_email = user.username
+
+            context = {
+                'user_name': first_name.title(),
+                'activation_link': activation_link
+            }
+
+            html_content = render_to_string('base/activation_email.html', context)
+            text_content = strip_tags(html_content)
+
+            email_msg = EmailMultiAlternatives(subject, text_content, from_email, [to_email])
+            email_msg.attach_alternative(html_content, "text/html")
+            email_msg.send()
+
+            return render(request, "base/activation_email_sent.html")
+            # login(request, user)
+            # return redirect("base:dashboard")
         else:
             messages.error(request, "password does not match")
+            return redirect("base:register")
 
     return render(request, "base/register.html")
+
+
+def activate(request, uidb64, token):
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    if user and default_token_generator.check_token(user, token):
+        user.is_active = True
+        user.save()
+        return render(request, 'base/activation_success.html')
+    else:
+        return HttpResponse('Activation link is invalid!')
+
 
 
 def loginPage(request):
@@ -89,13 +138,16 @@ def loginPage(request):
 
     return render(request, "base/login.html")
 
+
 @login_required(login_url="base:login")
 def logoutPage(request):
     logout(request)
     return redirect("base:login")
 
+
 def faqPage(request):
     return render(request, "base/faq.html")
+
 
 def forgot_password_request(request):
     if request.method == 'POST':

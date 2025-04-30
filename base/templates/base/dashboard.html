@@ -77,7 +77,7 @@
           <span class="task-badge difficulty easy"> {{task.num_of_completed}} / {{task.amount_tasker}}</span>
         </div>
         <h3 class="task-title">{{task.title}}</h3>
-        <p class="task-description">{{task.description}}</p>
+        <p class="task-description">{{task.description|truncatechars:50}}</p>
         <div class="task-meta">
           <span class="task-time">⏱️ {{task.estimated_time_mins}} mins</span>
           <span class="task-reward">&#8358;{{task.reward}}</span>

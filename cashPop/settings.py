@@ -30,7 +30,7 @@ PAYSTACK_SECRET_KEY = os.getenv("PAYSTACK_SECRET_KEY")
 # PAYSTACK_CALLBACK_URL = 'http://yourdomain.com/payment/callback/'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DEBUG") == "True"
+DEBUG = os.getenv("DEBUG") == "False"
 
 ALLOWED_HOSTS = ["c00c-102-134-16-210.ngrok-free.app", 'localhost', '127.0.0.1']
 CSRF_TRUSTED_ORIGINS = ["https://c00c-102-134-16-210.ngrok-free.app"]
@@ -138,11 +138,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 SESSION_COOKIE_AGE = 3600  # 1 hour in seconds
 SESSION_SAVE_EVERY_REQUEST = True  # Reset expiry on each request
 
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'static'
+
 # EMAIL
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'enitanelijah39@gmail.com'
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_PASSWORD")
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

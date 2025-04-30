@@ -12,7 +12,9 @@
 
 <body>
   
-  {% include "base/header.html" %}
+  {% block header %}
+    {% include "base/header.html" %}
+  {% endblock header %}
   
   {% include "base/mobile_navbar.html" %}
   {% if messages %}
@@ -30,6 +32,8 @@
   {% endblock content %}
 
   <!-- Footer -->
+{% block footer %}
+
   {% if request.user.is_authenticated %}
   <footer></footer>
   {% else %}
@@ -80,6 +84,8 @@
     </div>
   </footer>
   {% endif %}
+
+{% endblock footer %}
   
   <script src=" {% static "js/main.js" %} "></script>
 </body>
