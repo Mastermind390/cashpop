@@ -540,8 +540,8 @@ def paystack_webhook(request):
     secret = settings.PAYSTACK_SECRET_KEY.encode('utf-8')
     signature = request.headers.get('x-paystack-signature')
     payload = request.body
-    computed_signature = hmac.new(secret, msg=payload, digestmod=hashlib.sha512).hexdigest()
-
+    computed_signature = hmac.new(secret, digestmod=hashlib.sha512).hexdigest()
+    #msg=payload,
     print(signature)
     print(computed_signature)
 
@@ -582,3 +582,55 @@ def userTasksview(request):
     }
 
     return render(request, "base/user_task_view.html", context)
+
+
+# @login_required(login_url="base:login")
+# def paystack_success(request):
+#     reference = request.GET.get('reference')
+#     if not reference:
+#         messages.error(request, "Invalid transaction reference.")
+#         return redirect('some_failure_url')  # Replace with your actual failure URL
+
+#     headers = {
+#         "Authorization": f"Bearer {settings.PAYSTACK_SECRET_KEY}",
+#         "Content-Type": "application/json",
+#     }
+#     verification_url = f"https://api.paystack.co/transaction/verify/{reference}"
+
+#     try:
+#         response = requests.get(verification_url, headers=headers)
+#         response.raise_for_status()  # Raise an exception for HTTP errors (4xx or 5xx)
+#         data = response.json()
+
+#         if data.get('status') and data.get('data') and data['data'].get('status') == 'success':
+#             transaction_data = data['data']
+#             amount_paid = transaction_data['amount'] // 100  # Convert from kobo to naira
+#             transaction_reference = transaction_data['reference']
+
+#             try:
+#                 deposit = Deposit.objects.get(reference=transaction_reference, user=request.user, status='pending')
+#                 deposit.status = 'completed'
+#                 deposit.save()
+
+#                 # Update user balance
+#                 profile = UserProfile.objects.get(user=request.user)
+#                 profile.balance += amount_paid
+#                 profile.save()
+
+#                 messages.success(request, "Payment successful!")
+#                 return redirect('some_success_url')  # Replace with your actual success URL
+
+#             except Deposit.DoesNotExist:
+#                 messages.error(request, "Deposit record not found.")
+#                 return redirect('some_failure_url')
+
+#         else:
+#             messages.error(request, "Payment verification failed.")
+#             return redirect('some_failure_url')
+
+#     except requests.exceptions.RequestException as e:
+#         messages.error(request, f"Error verifying payment: {e}")
+#         return redirect('some_failure_url')
+#     except Exception as e:
+#         messages.error(request, f"An unexpected error occurred: {e}")
+#         return redirect('some_failure_url')
