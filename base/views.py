@@ -506,7 +506,7 @@ def reject(request, pk):
 def initialize_payment(request):
     if request.method == 'POST':
         amount = int(request.POST.get('amount'))
-        email = request.user.username  # or however you want to get the email
+        email = request.user.username  # Using user.email is generally better
 
         headers = {
             "Authorization": f"Bearer {settings.PAYSTACK_SECRET_KEY}",
@@ -516,17 +516,42 @@ def initialize_payment(request):
         data = {
             "email": email,
             "amount": amount * 100,  # Paystack works in kobo
-            "callback_url": "https://c00c-102-134-16-210.ngrok-free.app/webhook/paystack/",
+            "callback_url": request.build_absolute_uri(reverse('base:payment_successful')),
         }
 
-        response = requests.post('https://api.paystack.co/transaction/initialize', headers=headers, json=data)
-        response_data = response.json()
+        try:
+            response = requests.post('https://api.paystack.co/transaction/initialize', headers=headers, json=data)
+            response.raise_for_status()  # Raise HTTPError for bad responses (4xx or 5xx)
+            response_data = response.json()
 
-        if response_data.get('status'):
-            payment_url = response_data['data']['authorization_url']
-            return redirect(payment_url)
-        else:
-            return JsonResponse({'error': 'Payment initialization failed'}, status=400)
+            if response_data.get('status') and response_data.get('data') and response_data['data'].get('authorization_url'):
+                payment_url = response_data['data']['authorization_url']
+                reference = response_data['data']['reference']
+
+                Deposit.objects.create(
+                    user=request.user,
+                    amount=amount,
+                    reference=reference,
+                    status='pending'
+                )
+
+                return redirect(payment_url)
+            else:
+                messages.error(request, "Payment initialization failed.")
+                return redirect('base:deposit')  # Replace with your actual failure URL
+        except requests.exceptions.RequestException as e:
+            messages.error(request, f"Error initializing payment: {e}")
+            return redirect('base:deposit')
+        except json.JSONDecodeError:
+            messages.error(request, "Failed to decode Paystack API response.")
+            return redirect('base:deposit')
+        except Exception as e:
+            messages.error(request, f"An unexpected error occurred: {e}")
+            return redirect('base:deposit')
+    else:
+        # Handle GET requests to this view if necessary (e.g., display a payment form)
+        return render(request, 'base/deposit.html') # Replace with your form template
+
 
 
 
@@ -584,53 +609,62 @@ def userTasksview(request):
     return render(request, "base/user_task_view.html", context)
 
 
-# @login_required(login_url="base:login")
-# def paystack_success(request):
-#     reference = request.GET.get('reference')
-#     if not reference:
-#         messages.error(request, "Invalid transaction reference.")
-#         return redirect('some_failure_url')  # Replace with your actual failure URL
+@login_required(login_url="base:login")
+def paystack_success(request):
+    reference = request.GET.get('reference')
+    print(reference)
+    if not reference:
+        messages.error(request, "Invalid transaction reference.")
+        return redirect('base:deposit')  # Replace with your actual failure URL
 
-#     headers = {
-#         "Authorization": f"Bearer {settings.PAYSTACK_SECRET_KEY}",
-#         "Content-Type": "application/json",
-#     }
-#     verification_url = f"https://api.paystack.co/transaction/verify/{reference}"
+    headers = {
+        "Authorization": f"Bearer {settings.PAYSTACK_SECRET_KEY}",
+        "Content-Type": "application/json",
+    }
+    verification_url = f"https://api.paystack.co/transaction/verify/{reference}"
 
-#     try:
-#         response = requests.get(verification_url, headers=headers)
-#         response.raise_for_status()  # Raise an exception for HTTP errors (4xx or 5xx)
-#         data = response.json()
+    try:
+        response = requests.get(verification_url, headers=headers)
+        response.raise_for_status()  # Raise an exception for HTTP errors (4xx or 5xx)
+        data = response.json()
+        print(data)
 
-#         if data.get('status') and data.get('data') and data['data'].get('status') == 'success':
-#             transaction_data = data['data']
-#             amount_paid = transaction_data['amount'] // 100  # Convert from kobo to naira
-#             transaction_reference = transaction_data['reference']
+        if data.get('status') and data.get('data') and data['data'].get('status') == 'success':
+            transaction_data = data['data']
+            amount_paid = transaction_data['amount'] // 100  # Convert from kobo to naira
+            transaction_reference = transaction_data['reference']
 
-#             try:
-#                 deposit = Deposit.objects.get(reference=transaction_reference, user=request.user, status='pending')
-#                 deposit.status = 'completed'
-#                 deposit.save()
+            try:
+                deposit = Deposit.objects.get(reference=transaction_reference, user=request.user)
+                if deposit.status != 'completed': # Only update if not already completed
+                    deposit.status = 'completed'
+                    deposit.save()
 
-#                 # Update user balance
-#                 profile = UserProfile.objects.get(user=request.user)
-#                 profile.balance += amount_paid
-#                 profile.save()
+                    # Update user balance (only if not already updated)
+                    profile = UserProfile.objects.get(user=request.user)
+                    profile.balance += amount_paid
+                    profile.save()
 
-#                 messages.success(request, "Payment successful!")
-#                 return redirect('some_success_url')  # Replace with your actual success URL
+                    messages.success(request, "Payment successful!")
+                    return redirect('base:payment_successful')
+                else:
+                    messages.info(request, "Payment already processed.") # Or handle as needed
+                    return redirect('base:payment_successful')
+            except Deposit.DoesNotExist:
+                messages.error(request, "Deposit record not found.")
+                return redirect('base:deposit')
 
-#             except Deposit.DoesNotExist:
-#                 messages.error(request, "Deposit record not found.")
-#                 return redirect('some_failure_url')
+        else:
+            messages.error(request, "Payment verification failed.")
+            return redirect('base:payment_failed')
 
-#         else:
-#             messages.error(request, "Payment verification failed.")
-#             return redirect('some_failure_url')
+    except requests.exceptions.RequestException as e:
+        messages.error(request, f"Error verifying payment: {e}")
+        return redirect('base:payment_failed')
+    except Exception as e:
+        messages.error(request, f"An unexpected error occurred: {e}")
+        return redirect('base:payment_failed')
+    
+def paystack_failure(request):
 
-#     except requests.exceptions.RequestException as e:
-#         messages.error(request, f"Error verifying payment: {e}")
-#         return redirect('some_failure_url')
-#     except Exception as e:
-#         messages.error(request, f"An unexpected error occurred: {e}")
-#         return redirect('some_failure_url')
+    return render(request, "base/payment_fail.html")

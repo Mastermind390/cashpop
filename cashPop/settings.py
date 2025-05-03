@@ -30,10 +30,10 @@ PAYSTACK_SECRET_KEY = os.getenv("PAYSTACK_SECRET_KEY")
 # PAYSTACK_CALLBACK_URL = 'http://yourdomain.com/payment/callback/'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DEBUG") == "False"
+DEBUG = os.getenv("DEBUG") == "True"
 
-ALLOWED_HOSTS = ["c00c-102-134-16-210.ngrok-free.app", 'localhost', '127.0.0.1']
-CSRF_TRUSTED_ORIGINS = ["https://c00c-102-134-16-210.ngrok-free.app"]
+ALLOWED_HOSTS = ["eecf-102-134-16-210.ngrok-free.app", 'localhost', '127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ["https://eecf-102-134-16-210.ngrok-free.app"]
 
 # AUTH_USER_MODEL = 'base.User'
 # Application definition
