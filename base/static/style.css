@@ -638,13 +638,9 @@ ul, ol {
   margin-top: var(--space-10);
 }
 
-@media screen and (max-width: 480px) {
-  .dashboard-link-container {
-    display: none;
-    justify-content: space-between;
-    align-items: center;
-    
-  }
+
+.dashboard-link-container {
+  display: flex;
 }
 
 .dashboard-link-container a {
@@ -658,6 +654,13 @@ ul, ol {
   text-decoration: underline;
 }
 
+@media screen and (max-width: 480px) {
+  .dashboard-link-container {
+    display: none;
+    
+    
+  }
+}
 /* Testimonials */
 .testimonials {
   background-color: var(--muted-light);
@@ -839,11 +842,25 @@ ul, ol {
   padding: var(--space-8) 0;
 }
 
+
+.dashboard-text-container {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  margin-bottom: 20px;
+  max-width: 100%;
+}
+
+.dashboard-text-container h3 {
+  margin: 0;
+}
+
 @media screen and (max-width: 480px) {
   .dashboard-text-container {
     display: flex;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     flex-direction: column;
+    margin-bottom: 20px;
   }
 }
 
@@ -1088,6 +1105,10 @@ ul, ol {
   .profile-tab a {
     font-size: smaller;
   }
+
+  .profile {
+    max-width: 100%;
+  }
 }
 
 .profile-tab {
@@ -1118,6 +1139,7 @@ ul, ol {
 
 .profile-tab-content {
   display: block;
+  max-width: 100%;
 }
 
 .profile-tab-content.active {
@@ -1140,6 +1162,7 @@ ul, ol {
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
+  max-width: 100%;
 }
 
 .task-history-item,
@@ -1150,6 +1173,7 @@ ul, ol {
   padding: var(--space-4);
   background: var(--muted-light);
   border-radius: var(--radius-md);
+  max-width: 100%;
 }
 
 .task-history-details h3,
@@ -1230,6 +1254,7 @@ ul, ol {
 .choices {
   padding: 10px;
   background-color: rgb(231, 231, 231);
+  max-width: 50%;
 }
 
 .text {
@@ -1578,6 +1603,15 @@ ul, ol {
   
   .profile-container {
     grid-template-columns: 1fr;
+    margin: 0 20px;
+  }
+
+  /* .profile-main {
+    margin: 10px 20px;
+  } */
+
+  .container {
+    width: 100%;
   }
 }
 
@@ -1690,12 +1724,21 @@ ul, ol {
   justify-content: space-between;
   align-items: center;
   padding: 10px;
+  max-width: 100%;
+}
+
+.amount-container {
+  max-width: 100%;
 }
 
 .amount-container h4 {
-  font-size: large;
   margin: 0;
   color: rgb(4, 1, 180);
+}
+
+.amount-container span {
+  font-size: smaller;
+  margin: 0;
 }
 
 .status-pending{
@@ -1703,7 +1746,7 @@ ul, ol {
 }
 
 .status-completed{
-  color: orange;
+  color: green;
 }
 
 .proof-container {
@@ -1752,6 +1795,7 @@ ul, ol {
 
 .earning-transfer {
   padding: 10px;
+  max-width: 100%;
 }
 
 .earning-transfer input {
@@ -1942,6 +1986,7 @@ ul, ol {
   color: #333;
   line-height: 1.6;
 }
+
 .button {
   display: inline-block;
   padding: 12px 20px;
@@ -1950,4 +1995,107 @@ ul, ol {
   text-decoration: none;
   border-radius: 5px;
   margin-top: 20px;
+}
+
+.data-option option {
+  padding: 5px;
+}
+
+.recharge-history-container {
+  max-width: 100%;
+}
+
+@media screen and (max-width: 480px)  {
+  .side_bar_container {
+    padding: 10px;
+  }
+
+  .profile_link_container {
+    margin: 0 10px;
+  }
+
+  .heading_container {
+    padding: 20px;
+  }
+
+  .heading_container h4 {
+    color: rgb(68, 0, 255);
+  }
+
+  .heading_container input {
+    padding: 10px;
+    margin: 10px 0;
+  }
+
+  .top_up_history_container {
+    background-color: #e2ffde;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 5px 0;
+    padding: 15px;
+    overflow-y: auto; /* Scroll only vertically */
+  }
+
+  .top_up_main_container {
+    padding: 10px;
+    height: 300px;
+    overflow: hidden;
+  }
+}
+
+.top_up_scroll {
+  height: 100%; /* Fill the container height */
+  overflow-y: auto; /* Scroll only vertically */
+
+}
+
+.top_up_time {
+  color: red;
+  font-size: xx-small;
+}
+
+.top_up_amount {
+  color: #17c964;
+  font-size: smaller;
+  font-weight: bold;
+}
+
+.top_up_type {
+  color: #7e69ab;
+}
+
+.success {
+  color: green;
+  background-color: #e6ffe6;
+  border: 1px solid green;
+  padding: 10px;
+  border-radius: 5px;
+  list-style-type: none;
+  text-align: center;
+  margin: 0 10px;
+}
+
+.error {
+  color: red;
+  background-color: #ffe6e6;
+  border: 1px solid red;
+  padding: 10px;
+  list-style-type: none;
+  text-align: center;
+  border-radius: 5px;
+  margin: 0 10px;
+}
+
+.referal-code {
+  font-size: small;
+  margin-bottom: 10px;
+  background-color: #c9c4dd;
+  padding: 10px;
+}
+
+.data-choices {
+  max-width: 250px;
+  padding: 10px;
+  background-color: rgb(231, 231, 231);
 }

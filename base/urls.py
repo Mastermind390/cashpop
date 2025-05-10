@@ -1,6 +1,6 @@
 from django.urls import path, reverse_lazy
 from django.contrib.auth import views as auth_views
-from .views import home, registerPage, loginPage, faqPage, dashboard, logoutPage, profile, createTask, task_details, withdraw, deposit, account, task_review, approve, reject, reset_password, forgot_password_request, paystack_webhook, initialize_payment, userTasksview, activate,  paystack_success, paystack_failure
+from .views import home, registerPage, loginPage, faqPage, dashboard, logoutPage, profile, createTask, task_details, withdraw, deposit, account, task_review, approve, reject, reset_password, forgot_password_request, paystack_webhook, initialize_payment, userTasksview, activate,  paystack_success, paystack_failure, vtu_data_and_airtime, renew_sub
 
 app_name = 'base'
 
@@ -28,4 +28,6 @@ urlpatterns = [
     path("payment_successful/", paystack_success, name="payment_successful"), 
     path("payment_failed/", paystack_failure, name="payment_failed"),
     path('activate/<uidb64>/<token>/', activate, name='activate'),
+    path('mobile-Top-up/', vtu_data_and_airtime, name="mobile_top_up"),
+    path('renew-subscription/', renew_sub, name="renew-sub"),
 ]

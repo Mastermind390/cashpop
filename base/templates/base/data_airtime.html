@@ -1,0 +1,78 @@
+{% extends "base/main.html" %}
+{% block title %}Profile - CashPop{% endblock title %}
+
+{% block content %}
+
+<!-- Profile Content -->
+<main class="profile">
+  <div class="container">
+    <h1 class="page-title">My Profile</h1>
+    
+    <div class="profile-container">
+      {% include "base/profile_sidebar.html" %}
+      
+      <div class="profile-main">
+        {% include "base/profile_nav_links.html" %}
+        
+        <div>
+          <div class="profile-tab-content" id="payments">
+            <h2>Data and Airtime Top-Up</h2>
+
+            <div class="earning-transfer">
+              <h4>Top-Up Airtime</h4>
+              <form action="" method="POST">
+                {% csrf_token %}
+                <select class="choices" name="network" id="">
+                  {% for network in networks %}
+                  <option value="{{network}}">{{network}}</option>
+                  {% endfor %}
+                </select><br><br>
+                <input type="text" name="phone" placeholder="enter phone number">
+                <input type="text" name="amount" placeholder="enter amount">
+                <input type="hidden" name="action" value="airtime">
+                <input class="start-link" type="submit" value="Top-Up Airtme">
+              </form>
+            </div>
+
+
+            <div class="payment-history">
+              <div class="payment-history-item">
+                
+                <form action="" method="POST">
+                  {% csrf_token %}
+                  <label for="amount">Top-Up Data</label><br>
+                  <select class="data-choices" name="data_plan" id="">
+                    {% for data in data_options %}
+                    <option value="{{data.variation_code}}">{{data.variation_code}} -- {{data.name}} -- &#8358;{{data.variation_amount}}</option>
+                    {% endfor %}
+                  </select>
+                  <input type="hidden" name="action" value="data">
+                  <input type="text" name="phone" placeholder="enter phone number"><br>
+                  <input class="start-link" type="submit" name="withdraw" value="Top-Up Data"><br>
+                </form>
+              </div>
+              <div>
+                <h3>Top-Ups History</h3>
+                {% for top_up in top_up_history %}
+                <div class="withdraw-wrapper">
+                  <div class="amount-container">
+                    <h4>{{top_up.type.capitalize}}</h4>
+                    <span class="top_up_time">{{top_up.created_at | timesince}} ago</span>
+                  </div>
+                  <div>
+                    <span class="top_up_amount">&#8358;{{top_up.amount}}</span>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="js/profile.js"></script>
+<script src="js/main.js"></script>
+{% endblock content %}

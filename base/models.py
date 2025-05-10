@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 import uuid
+from dateutil.relativedelta import relativedelta
 
 CATEGORY_CHOICES = [
         ('social_media', 'social_media'),
@@ -69,7 +70,6 @@ class UserTask(models.Model):
         return self.task.title
 
 
-
 class UserLogin(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     login_date = models.DateField(auto_now_add=True)
@@ -88,7 +88,6 @@ class UserAccountDetail(models.Model):
         return self.full_name
     
 
-
 class Withdrawal(models.Model):
     STATUS_CHOICES = [
         ('pending', 'Pending'),
@@ -105,7 +104,6 @@ class Withdrawal(models.Model):
         return f"{self.user.first_name}, {self.amount}"
 
 
-
 class Deposit(models.Model):
     STATUS_CHOICES = [
         ('pending', 'Pending'),
@@ -120,3 +118,30 @@ class Deposit(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.amount} - {self.status}"
+    
+
+class Top_up(models.Model):
+    TOP_UP_TYPE = [
+    ('airtime', 'airtime'),
+    ('data', 'data'),
+    ]
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    type = models.CharField(max_length=10, choices=TOP_UP_TYPE, default='airtime')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+class Subscription(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    is_active = models.BooleanField(default=True)
+    next_billing_date = models.DateField()
+    monthly_fee = models.DecimalField(max_digits=6, decimal_places=2, default=500.00)
+
+    @staticmethod
+    def create_for_user(user):
+        registration_date = user.date_joined.date()
+        first_billing_date = registration_date + relativedelta(months=1)
+        return Subscription.objects.create(user=user, next_billing_date=first_billing_date, is_active=True)
+    
+    def __str__(self):
+        return f'{self.next_billing_date}'

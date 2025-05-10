@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import TaskForm
-from .models import UserProfile, UserTask, Task, UserAccountDetail, Withdrawal, Deposit
+from .models import UserProfile, UserTask, Task, UserAccountDetail, Withdrawal, Deposit, Top_up, Subscription
 from .streak import get_login_streak
 from django.db import transaction
 from django.contrib.auth.tokens import default_token_generator
@@ -24,9 +24,11 @@ from django.urls import reverse
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
-
-
-
+from .utils.data_vtu import get_data_options, purchase_data
+from .utils import airtime_vtu
+from .utils import today_date
+from decimal import Decimal
+import uuid
 
 
 def home(request):
@@ -50,6 +52,7 @@ def registerPage(request):
         password = request.POST["password"]
         confirm_password = request.POST["confirm_password"]
         email = request.POST["email"].lower().strip()
+        referal_code = request.POST["referal_code"].lower().strip()
 
         if password == confirm_password:
             try:
@@ -68,6 +71,16 @@ def registerPage(request):
             )
             user.is_active = False
             user.save()
+            new_user = User.objects.get(username=email)
+            userprofile = UserProfile.objects.get(user=new_user)
+
+            if referal_code:
+                try:
+                    referred_user = UserProfile.objects.get(referral_code=referal_code)
+                    userprofile.referred_by = referred_user
+                    userprofile.save()
+                except UserProfile.DoesNotExist:
+                    userprofile.referred_by = None
 
             uid = urlsafe_base64_encode(force_bytes(user.pk))
             token = default_token_generator.make_token(user)
@@ -115,7 +128,6 @@ def activate(request, uidb64, token):
         return render(request, 'base/activation_success.html')
     else:
         return HttpResponse('Activation link is invalid!')
-
 
 
 def loginPage(request):
@@ -319,20 +331,28 @@ def task_details(request, pk):
     user = User.objects.get(id=request.user.id)
     usertask = UserTask.objects.filter(user=user, status="pending")
     pending_task_ids = usertask.values_list("task_id", flat=True)
+    todays_date = today_date.get_todays_date()
+    user_next_subscription_date = Subscription.objects.filter(user=user)[0]
+    is_subscription_expired = todays_date > user_next_subscription_date.next_billing_date
+    print(is_subscription_expired)
 
     if request.method == "POST":
-        proof_username = request.POST.get("proof")
-        proof_image = request.FILES.get("screenshot")
+        if is_subscription_expired:
+            messages.error(request, "Sorry!, your subscription has expired. You subscribe for this month to continue.")
+            return redirect("base:dashboard")
+        else:
+            proof_username = request.POST.get("proof")
+            proof_image = request.FILES.get("screenshot")
 
-        submitted_task = UserTask.objects.create(
-            user = request.user,
-            task = task,
-            proof_image = proof_image,
-            proof_username = proof_username,
-            status = "pending"
-        )
-        submitted_task.save()
-        return redirect("base:dashboard")
+            submitted_task = UserTask.objects.create(
+                user = request.user,
+                task = task,
+                proof_image = proof_image,
+                proof_username = proof_username,
+                status = "pending"
+            )
+            submitted_task.save()
+            return redirect("base:dashboard")
 
     context = {
         "task" : task,
@@ -342,7 +362,6 @@ def task_details(request, pk):
 
 @login_required(login_url="base:login")
 def deposit(request):
-
     return render(request, "base/deposit.html")
 
 @login_required(login_url="base:login")
@@ -479,6 +498,7 @@ def approve(request, pk):
 
         if task.task.num_of_completed >= task.task.amount_tasker:
             task.task.is_active = False
+            task.task.save()
 
         # 2. Update the user profile earnings
         user_profile = task.user.userprofile
@@ -503,10 +523,34 @@ def reject(request, pk):
     return render(request, "base/task_review.html", {"task" : task})
 
 
+@login_required(login_url="base:login")
+def userTasksview(request):
+    user = request.user
+    tasks = Task.objects.filter(creator=user).order_by("-created_at")[:10]
+
+    context = {
+        "tasks" : tasks,
+    }
+
+    return render(request, "base/user_task_view.html", context)
+
+
+@login_required(login_url="base:login")
 def initialize_payment(request):
     if request.method == 'POST':
-        amount = int(request.POST.get('amount'))
+        amount = request.POST.get('amount')
         email = request.user.username  # Using user.email is generally better
+
+        try:
+            amount = int(request.POST.get("amount"))
+        except (ValueError, TypeError):
+            messages.error(request, "Invalid amount")
+            return redirect("base:deposit")
+        
+        if amount < 500:
+            messages.error(request, "minimum amount to deposit is N500")
+            return redirect("base:deposit")
+
 
         headers = {
             "Authorization": f"Bearer {settings.PAYSTACK_SECRET_KEY}",
@@ -518,9 +562,10 @@ def initialize_payment(request):
             "amount": amount * 100,  # Paystack works in kobo
             "callback_url": request.build_absolute_uri(reverse('base:payment_successful')),
         }
+        print(data["callback_url"])
 
         try:
-            response = requests.post('https://api.paystack.co/transaction/initialize', headers=headers, json=data)
+            response = requests.post('https://api.paystack.co/transaction/initialize', headers=headers, data=json.dumps(data))
             response.raise_for_status()  # Raise HTTPError for bad responses (4xx or 5xx)
             response_data = response.json()
 
@@ -534,6 +579,7 @@ def initialize_payment(request):
                     reference=reference,
                     status='pending'
                 )
+                print(payment_url)
 
                 return redirect(payment_url)
             else:
@@ -551,8 +597,6 @@ def initialize_payment(request):
     else:
         # Handle GET requests to this view if necessary (e.g., display a payment form)
         return render(request, 'base/deposit.html') # Replace with your form template
-
-
 
 
 @csrf_exempt
@@ -598,23 +642,12 @@ def paystack_webhook(request):
 
 
 @login_required(login_url="base:login")
-def userTasksview(request):
-    user = request.user
-    tasks = Task.objects.filter(creator=user)
-
-    context = {
-        "tasks" : tasks,
-    }
-
-    return render(request, "base/user_task_view.html", context)
-
-
-@login_required(login_url="base:login")
 def paystack_success(request):
+    print(f"Full URL: {request.build_absolute_uri()}")
     reference = request.GET.get('reference')
     print(reference)
     if not reference:
-        messages.error(request, "Invalid transaction reference.")
+        # messages.error(request, "Invalid transaction reference.")
         return redirect('base:deposit')  # Replace with your actual failure URL
 
     headers = {
@@ -665,6 +698,113 @@ def paystack_success(request):
         messages.error(request, f"An unexpected error occurred: {e}")
         return redirect('base:payment_failed')
     
-def paystack_failure(request):
 
+@login_required(login_url="base:login")
+def paystack_failure(request):
     return render(request, "base/payment_fail.html")
+
+
+@login_required(login_url="base:login")
+def vtu_data_and_airtime(request):
+    networks = ["mtn", "glo", "airtel", "etisalat"]
+    data_options = get_data_options()
+    user = request.user
+    userprofile = user.userprofile
+    user_wallet_balance = userprofile.balance
+
+    top_up_history = Top_up.objects.filter(user=user).order_by("-created_at")[:10]
+
+    if request.method == "POST":
+        action = request.POST.get("action")
+        network = request.POST.get("network")
+        phone = request.POST.get("phone")
+        amount = request.POST.get("amount")
+
+        if action == "airtime":
+            try:
+                amount = int(request.POST.get("amount"))
+            except (ValueError, TypeError):
+                messages.error(request, "Invalid amount")
+                return redirect("base:mobile_top_up")
+
+            if amount < 100:
+                messages.error(request, "minimum amount 100")
+                return redirect("base:mobile_top_up")
+        
+            if user_wallet_balance >= amount:
+                try:
+                    userprofile.balance -= amount
+                    userprofile.save()
+                    response = airtime_vtu.buy_airtime(network, amount, phone)
+                    messages.success(request, f"{response}")
+                    Top_up.objects.create(
+                        user=request.user,
+                        amount=amount,
+                        type='airtime'
+                    )
+                    return redirect("base:mobile_top_up")
+                except:
+                    messages.error(request, f"{response}")
+            else:
+                messages.error(request, "insufficient wallet  balance")
+                return redirect("base:mobile_top_up")
+            
+        elif action == "data":
+            data_options = get_data_options()
+            
+            if request.method == "POST":
+                data_plan = request.POST.get("data_plan")
+                user_phone_number = request.POST.get("phone")
+
+                match_item = None
+
+                for data in data_options:
+                    if data_plan == data["variation_code"]:
+                        match_item = data
+
+                variation_code = match_item["variation_code"]
+                data_amount = match_item["variation_amount"]
+                print(match_item)
+
+                serviceID = None
+
+                if "air" in variation_code:
+                    serviceID = "airtel"
+                elif "mtn" in variation_code:
+                    serviceID = "mtn"
+                elif 'glo-dg' in variation_code:
+                    serviceID = "glo-sme"
+                elif "glo" in variation_code:
+                    serviceID = "glo"
+                elif 'eti' in variation_code:
+                    serviceID = "etisalat"
+
+                print(variation_code)
+                if Decimal(user_wallet_balance) >= Decimal(str(data_amount)):
+                    userprofile.balance -= Decimal(str(data_amount))
+                    userprofile.save()
+                    response = purchase_data(serviceID, data_amount, "08011111111", variation_code, user_phone_number)
+                    print(response)
+                    messages.success(request, f"{response}")
+                    Top_up.objects.create(
+                    user=request.user,
+                    amount = data_amount,
+                    type='data'
+                )
+                    return redirect("base:mobile_top_up")
+                else:
+                    messages.error(request, "insufficient amount")
+                    return redirect("base:mobile_top_up")
+
+    context = {
+        "networks" : networks,
+        "data_options" : data_options,
+        "top_up_history" : top_up_history,
+    }
+
+    return render(request, "base/data_airtime.html", context)
+
+
+def renew_sub(request):
+
+    return render(request, "base/renew_sub.html")

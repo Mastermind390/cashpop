@@ -1,0 +1,1468 @@
+[
+    {
+      "Network": "MTN",
+      "Data ID": 1,
+      "Size": "750 MB",
+      "Type": "SME",
+      "Validity": "3 Days",
+      "Basic User Price": "₦443.25"
+    },
+    {
+      "Network": "MTN",
+      "Data ID": 2,
+      "Size": "1GB",
+      "Type": "SME",
+      "Validity": "7 Days",
+      "Basic User Price": "₦800.00"
+    },
+    {
+      "Network": "MTN",
+      "Data ID": 3,
+      "Size": "1.5GB",
+      "Type": "SME",
+      "Validity": "7 Days",
+      "Basic User Price": "₦985.00"
+    },
+    {
+      "Network": "MTN",
+      "Data ID": 4,
+      "Size": "2.7GB",
+      "Type": "SME",
+      "Validity": "30 Days",
+      "Basic User Price": "₦1970.00"
+    },
+    {
+      "Network": "MTN",
+      "Data ID": 5,
+      "Size": "6GB",
+      "Type": "SME",
+      "Validity": "7 Days",
+      "Basic User Price": "₦2437.50"
+    },
+    {
+      "Network": "MTN",
+      "Data ID": 6,
+      "Size": "10GB",
+      "Type": "SME",
+      "Validity": "30 Days",
+      "Basic User Price": "₦4455.00"
+    },
+    {
+      "Network": "GLO",
+      "Data ID": 22,
+      "Size": "500 MB",
+      "Type": "Corporate",
+      "Validity": "30 Days",
+      "Basic User Price": "₦220.00"
+    },
+    {
+      "Network": "GLO",
+      "Data ID": 23,
+      "Size": "1 GB",
+      "Type": "Corporate",
+      "Validity": "30 Days",
+      "Basic User Price": "₦440.00"
+    },
+    {
+      "Network": "GLO",
+      "Data ID": 24,
+      "Size": "2 GB",
+      "Type": "Corporate",
+      "Validity": "30 Days",
+      "Basic User Price": "₦880.00"
+    },
+    {
+      "Network": "GLO",
+      "Data ID": 25,
+      "Size": "3 GB",
+      "Type": "Corporate",
+      "Validity": "30 Days",
+      "Basic User Price": "₦1320.00"
+    },
+    {
+      "Network": "GLO",
+      "Data ID": 26,
+      "Size": "5 GB",
+      "Type": "Corporate",
+      "Validity": "30 Days",
+      "Basic User Price": "₦2200.00"
+    },
+    {
+      "Network": "GLO",
+      "Data ID": 27,
+      "Size": "10 GB",
+      "Type": "Corporate",
+      "Validity": "30 Days",
+      "Basic User Price": "₦4400.00"
+    },
+    {
+      "Network": "AIRTEL",
+      "Data ID": 28,
+      "Size": "500 MB",
+      "Type": "Corporate",
+      "Validity": "7 Days",
+      "Basic User Price": "₦495.00"
+    },
+    {
+      "Network": "AIRTEL",
+      "Data ID": 29,
+      "Size": "1 GB",
+      "Type": "Corporate",
+      "Validity": "7 Days",
+      "Basic User Price": "₦792.00"
+    },
+    {
+      "Network": "AIRTEL",
+      "Data ID": 30,
+      "Size": "2 GB",
+      "Type": "Corporate",
+      "Validity": "30 Days",
+      "Basic User Price": "₦1485.00"
+    },
+    {
+      "Network": "AIRTEL",
+      "Data ID": 31,
+      "Size": "100MB",
+      "Type": "Corporate",
+      "Validity": "1 Days",
+      "Basic User Price": "₦99.00"
+    },
+    {
+      "Network": "AIRTEL",
+      "Data ID": 32,
+      "Size": "6 GB",
+      "Type": "Corporate",
+      "Validity": "30 Days",
+      "Basic User Price": "₦2970.00"
+    },
+    {
+      "Network": "AIRTEL",
+      "Data ID": 33,
+      "Size": "10 GB",
+      "Type": "Corporate",
+      "Validity": "30 Days",
+      "Basic User Price": "₦3960.00"
+    },
+    {
+      "Network": "9MOBILE",
+      "Data ID": 34,
+      "Size": "500 MB",
+      "Type": "Corporate",
+      "Validity": "30 Days",
+      "Basic User Price": "₦71.00"
+    },
+    {
+      "Network": "9MOBILE",
+      "Data ID": 35,
+      "Size": "1 GB",
+      "Type": "Corporate",
+      "Validity": "30 Days",
+      "Basic User Price": "₦130.00"
+    },
+    {
+      "Network": "9MOBILE",
+      "Data ID": 36,
+      "Size": "2 GB",
+      "Type": "Corporate",
+      "Validity": "30 Days",
+      "Basic User Price": "₦260.00"
+    },
+    {
+      "Network": "9MOBILE",
+      "Data ID": 37,
+      "Size": "3 GB",
+      "Type": "Corporate",
+      "Validity": "30 Days",
+      "Basic User Price": "₦390.00"
+    },
+    {
+      "Network": "AIRTEL",
+      "Data ID": 38,
+      "Size": "200MB",
+      "Type": "Corporate",
+      "Validity": "2 Days",
+      "Basic User Price": "₦198.00"
+    },
+    {
+      "Network": "9MOBILE",
+      "Data ID": 39,
+      "Size": "10GB",
+      "Type": "Corporate",
+      "Validity": "30 Days",
+      "Basic User Price": "₦1300.00"
+    },
+    {
+      "Network": "GLO",
+      "Data ID": 50,
+      "Size": "200MB",
+      "Type": "Corporate",
+      "Validity": "14 Days",
+      "Basic User Price": "₦95.00"
+    },
+    {
+      "Network": "9MOBILE",
+      "Data ID": 68,
+      "Size": "4GB",
+      "Type": "Corporate",
+      "Validity": "30 Days",
+      "Basic User Price": "₦520.00"
+    },
+    {
+      "Network": "9MOBILE",
+      "Data ID": 69,
+      "Size": "20GB",
+      "Type": "Corporate",
+      "Validity": "30 Days",
+      "Basic User Price": "₦2600.00"
+    },
+    {
+      "Network": "9MOBILE",
+      "Data ID": 80,
+      "Size": "1.5GB",
+      "Type": "Corporate",
+      "Validity": "30 Days",
+      "Basic User Price": "₦197.00"
+    },
+    {
+      "Network": "AIRTEL",
+      "Data ID": 82,
+      "Size": "18GB",
+      "Type": "Corporate",
+      "Validity": "30 Days",
+      "Basic User Price": "₦5940.00"
+    },
+    {
+      "Network": "AIRTEL",
+      "Data ID": 83,
+      "Size": "25GB",
+      "Type": "Corporate",
+      "Validity": "30 Days",
+      "Basic User Price": "₦7920.00"
+    },
+    {
+      "Network": "AIRTEL",
+      "Data ID": 110,
+      "Size": "Please Do Not Buy If You Are Owing Airtel Airtime, As they will Debit you",
+      "Type": "SME",
+      "Validity": "0 Days",
+      "Basic User Price": "₦10.00"
+    },
+    {
+      "Network": "AIRTEL",
+      "Data ID": 111,
+      "Size": "150MB",
+      "Type": "SME",
+      "Validity": "2 Days",
+      "Basic User Price": "₦68.00"
+    },
+    {
+      "Network": "AIRTEL",
+      "Data ID": 112,
+      "Size": "300MB",
+      "Type": "SME",
+      "Validity": "2 Days",
+      "Basic User Price": "₦128.00"
+    },
+    {
+      "Network": "AIRTEL",
+      "Data ID": 113,
+      "Size": "1GB",
+      "Type": "SME",
+      "Validity": "1 Days",
+      "Basic User Price": "₦365.00"
+    },
+    {
+      "Network": "AIRTEL",
+      "Data ID": 114,
+      "Size": "2GB",
+      "Type": "SME",
+      "Validity": "2 Days",
+      "Basic User Price": "₦675.00"
+    },
+    {
+      "Network": "AIRTEL",
+      "Data ID": 116,
+      "Size": "3GB",
+      "Type": "SME",
+      "Validity": "7 Days",
+      "Basic User Price": "₦1070.00"
+    },
+    {
+      "Network": "AIRTEL",
+      "Data ID": 117,
+      "Size": "7GB",
+      "Type": "SME",
+      "Validity": "7 Days",
+      "Basic User Price": "₦2100.00"
+    },
+    {
+      "Network": "AIRTEL",
+      "Data ID": 118,
+      "Size": "10GB",
+      "Type": "SME",
+      "Validity": "30 Days",
+      "Basic User Price": "₦3200.00"
+    },
+    {
+      "Network": "GLO",
+      "Data ID": 125,
+      "Size": "750 MB",
+      "Type": "AwoofData",
+      "Validity": "1 Days",
+      "Basic User Price": "₦192.00"
+    },
+    {
+      "Network": "GLO",
+      "Data ID": 126,
+      "Size": "1.5GB",
+      "Type": "AwoofData",
+      "Validity": "1 Days",
+      "Basic User Price": "₦295.00"
+    },
+    {
+      "Network": "GLO",
+      "Data ID": 127,
+      "Size": "2.5GB",
+      "Type": "AwoofData",
+      "Validity": "2 Days",
+      "Basic User Price": "₦495.00"
+    },
+    {
+      "Network": "GLO",
+      "Data ID": 128,
+      "Size": "10GB",
+      "Type": "AwoofData",
+      "Validity": "7 Days",
+      "Basic User Price": "₦1915.00"
+    },
+    {
+      "Network": "GLO",
+      "Data ID": 129,
+      "Size": "GLO WTF â‚¦25 100MB Oneoff",
+      "Type": "SocialMedia",
+      "Validity": "1 Days",
+      "Basic User Price": "₦25.77"
+    },
+    {
+      "Network": "GLO",
+      "Data ID": 130,
+      "Size": "GLO WTF â‚¦50 200MB Oneoff",
+      "Type": "SocialMedia",
+      "Validity": "7 Days",
+      "Basic User Price": "₦50.53"
+    },
+    {
+      "Network": "GLO",
+      "Data ID": 131,
+      "Size": "GLO WTF â‚¦100 500MB Oneoff",
+      "Type": "SocialMedia",
+      "Validity": "30 Days",
+      "Basic User Price": "₦100.00"
+    },
+    {
+      "Network": "GLO",
+      "Data ID": 132,
+      "Size": "GLO Telegram â‚¦25 20MB Oneoff",
+      "Type": "SocialMedia",
+      "Validity": "1 Days",
+      "Basic User Price": "₦25.77"
+    },
+    {
+      "Network": "GLO",
+      "Data ID": 133,
+      "Size": "GLO Telegram â‚¦50 50MB Oneoff",
+      "Type": "SocialMedia",
+      "Validity": "7 Days",
+      "Basic User Price": "₦50.53"
+    },
+    {
+      "Network": "GLO",
+      "Data ID": 134,
+      "Size": "GLO Telegram â‚¦100 125MB Oneoff",
+      "Type": "SocialMedia",
+      "Validity": "30 Days",
+      "Basic User Price": "₦100.00"
+    },
+    {
+      "Network": "GLO",
+      "Data ID": 135,
+      "Size": "GLO Instagram â‚¦25 20MB Oneoff",
+      "Type": "SocialMedia",
+      "Validity": "1 Days",
+      "Basic User Price": "₦25.77"
+    },
+    {
+      "Network": "GLO",
+      "Data ID": 136,
+      "Size": "GLO Instagram â‚¦50 50MB Oneoff",
+      "Type": "SocialMedia",
+      "Validity": "7 Days",
+      "Basic User Price": "₦50.53"
+    },
+    {
+      "Network": "GLO",
+      "Data ID": 137,
+      "Size": "GLO Instagram â‚¦100 125MB Oneoff",
+      "Type": "SocialMedia",
+      "Validity": "30 Days",
+      "Basic User Price": "₦100.00"
+    },
+    {
+      "Network": "GLO",
+      "Data ID": 138,
+      "Size": "GLO Tiktok â‚¦25 20MB Oneoff",
+      "Type": "SocialMedia",
+      "Validity": "1 Days",
+      "Basic User Price": "₦25.77"
+    },
+    {
+      "Network": "GLO",
+      "Data ID": 139,
+      "Size": "GLO Tiktok â‚¦50 50MB Oneoff",
+      "Type": "SocialMedia",
+      "Validity": "7 Days",
+      "Basic User Price": "₦50.53"
+    },
+    {
+      "Network": "GLO",
+      "Data ID": 140,
+      "Size": "GLO Tiktok â‚¦100 125MB Oneoff",
+      "Type": "SocialMedia",
+      "Validity": "30 Days",
+      "Basic User Price": "₦100.00"
+    },
+    {
+      "Network": "GLO",
+      "Data ID": 141,
+      "Size": "GLO Opera â‚¦25 25MB Oneoff",
+      "Type": "SocialMedia",
+      "Validity": "1 Days",
+      "Basic User Price": "₦25.77"
+    },
+    {
+        "Network": "GLO",
+        "Data ID": 142,
+        "Size": "GLO Opera â‚¦50 100MB Oneoff",
+        "Type": "SocialMedia",
+        "Validity": "7 Days",
+        "Basic User Price": "₦50.53"
+    },
+    {
+        "Network": "GLO",
+        "Data ID": 143,
+        "Size": "GLO Opera â‚¦100 300MB Oneoff",
+        "Type": "SocialMedia",
+        "Validity": "30 Days",
+        "Basic User Price": "₦100.00"
+    },
+    {
+        "Network": "GLO",
+        "Data ID": 144,
+        "Size": "GLO MyG â‚¦300 1 GB OneOff (Whatsapp, Instagram, Snapchat, Boomplay, Audiomac, GloTV, Tiktok)",
+        "Type": "SocialMedia",
+        "Validity": "3 Days",
+        "Basic User Price": "₦299.96"
+    },
+    {
+        "Network": "GLO",
+        "Data ID": 145,
+        "Size": "Glo MyG â‚¦500 1.5 GB OneOff (Whatsapp, Instagram, Snapchat, Boomplay, Audiomac, GloTV, Tiktok)",
+        "Type": "SocialMedia",
+        "Validity": "7 Days",
+        "Basic User Price": "₦498.96"
+    },
+    {
+        "Network": "GLO",
+        "Data ID": 146,
+        "Size": "Glo MyG â‚¦1000 3.5 GB OneOff (Whatsapp, Instagram, Snapchat, Boomplay, Audiomac, GloTV, Tiktok)",
+        "Type": "SocialMedia",
+        "Validity": "30 Days",
+        "Basic User Price": "₦994.87"
+    },
+    {
+        "Network": "GLO",
+        "Data ID": 147,
+        "Size": "Glo Youtube â‚¦50 100MB Oneoff",
+        "Type": "YoutubeBundle",
+        "Validity": "1 Days",
+        "Basic User Price": "₦50.53"
+    },
+    {
+        "Network": "GLO",
+        "Data ID": 148,
+        "Size": "Glo Youtube â‚¦100 200MB Oneoff",
+        "Type": "YoutubeBundle",
+        "Validity": "7 Days",
+        "Basic User Price": "₦100.00"
+    },
+    {
+        "Network": "GLO",
+        "Data ID": 149,
+        "Size": "Glo Youtube â‚¦250 500MB Oneoff",
+        "Type": "YoutubeBundle",
+        "Validity": "30 Days",
+        "Basic User Price": "₦250.50"
+    },
+    {
+        "Network": "GLO",
+        "Data ID": 150,
+        "Size": "Glo Youtube â‚¦50 500MB Oneoff (1 hour)",
+        "Type": "YoutubeBundle",
+        "Validity": "1 Days",
+        "Basic User Price": "₦50.53"
+    },
+    {
+        "Network": "GLO",
+        "Data ID": 151,
+        "Size": "Glo Youtube â‚¦130 1.5GB Oneoff (3 hours)",
+        "Type": "YoutubeBundle",
+        "Validity": "1 Days",
+        "Basic User Price": "₦129.69"
+    },
+    {
+        "Network": "GLO",
+        "Data ID": 152,
+        "Size": "Glo Youtube â‚¦200 2GB Night Oneoff (7 hours Night)",
+        "Type": "YoutubeBundle",
+        "Validity": "1 Days",
+        "Basic User Price": "₦200.97"
+    },
+    {
+        "Network": "GLO",
+        "Data ID": 153,
+        "Size": "125MB",
+        "Type": "GiftingPlan",
+        "Validity": "1 Days",
+        "Basic User Price": "₦100.00"
+    },
+    {
+        "Network": "GLO",
+        "Data ID": 154,
+        "Size": "260MB",
+        "Type": "GiftingPlan",
+        "Validity": "2 Days",
+        "Basic User Price": "₦200.00"
+    },
+    {
+        "Network": "GLO",
+        "Data ID": 155,
+        "Size": "1.5GB",
+        "Type": "GiftingPlan",
+        "Validity": "14 Days",
+        "Basic User Price": "₦500.00"
+    },
+    {
+        "Network": "GLO",
+        "Data ID": 156,
+        "Size": "2.6GB",
+        "Type": "GiftingPlan",
+        "Validity": "30 Days",
+        "Basic User Price": "₦1000.00"
+    },
+    {
+        "Network": "GLO",
+        "Data ID": 157,
+        "Size": "5GB",
+        "Type": "GiftingPlan",
+        "Validity": "30 Days",
+        "Basic User Price": "₦1500.00"
+    },
+    {
+        "Network": "GLO",
+        "Data ID": 158,
+        "Size": "7.5GB",
+        "Type": "GiftingPlan",
+        "Validity": "30 Days",
+        "Basic User Price": "₦2500.00"
+    },
+    {
+        "Network": "GLO",
+        "Data ID": 159,
+        "Size": "11GB",
+        "Type": "GiftingPlan",
+        "Validity": "30 Days",
+        "Basic User Price": "₦3000.00"
+    },
+    {
+        "Network": "GLO",
+        "Data ID": 160,
+        "Size": "14GB",
+        "Type": "GiftingPlan",
+        "Validity": "30 Days",
+        "Basic User Price": "₦4000.00"
+    },
+    {
+        "Network": "GLO",
+        "Data ID": 161,
+        "Size": "18GB",
+        "Type": "GiftingPlan",
+        "Validity": "30 Days",
+        "Basic User Price": "₦5000.00"
+    },
+    {
+        "Network": "GLO",
+        "Data ID": 162,
+        "Size": "29GB",
+        "Type": "GiftingPlan",
+        "Validity": "30 Days",
+        "Basic User Price": "₦8000.00"
+    },
+    {
+        "Network": "GLO",
+        "Data ID": 163,
+        "Size": "40GB",
+        "Type": "GiftingPlan",
+        "Validity": "30 Days",
+        "Basic User Price": "₦10000.00"
+    },
+    {
+        "Network": "GLO",
+        "Data ID": 164,
+        "Size": "69GB",
+        "Type": "GiftingPlan",
+        "Validity": "30 Days",
+        "Basic User Price": "₦15000.00"
+    },
+    {
+        "Network": "GLO",
+        "Data ID": 166,
+        "Size": "110GB",
+        "Type": "GiftingPlan",
+        "Validity": "30 Days",
+        "Basic User Price": "₦20000.00"
+    },
+    {
+        "Network": "GLO",
+        "Data ID": 167,
+        "Size": "165GB",
+        "Type": "BigBundles",
+        "Validity": "30 Days",
+        "Basic User Price": "₦30000.00"
+    },
+    {
+        "Network": "GLO",
+        "Data ID": 168,
+        "Size": "220GB",
+        "Type": "BigBundles",
+        "Validity": "30 Days",
+        "Basic User Price": "₦36000.00"
+    },
+    {
+        "Network": "GLO",
+        "Data ID": 169,
+        "Size": "320GB",
+        "Type": "BigBundles",
+        "Validity": "60 Days",
+        "Basic User Price": "₦50000.00"
+    },
+    {
+        "Network": "GLO",
+        "Data ID": 170,
+        "Size": "380GB",
+        "Type": "BigBundles",
+        "Validity": "90 Days",
+        "Basic User Price": "₦60000.00"
+    },
+    {
+        "Network": "GLO",
+        "Data ID": 171,
+        "Size": "475GB",
+        "Type": "BigBundles",
+        "Validity": "90 Days",
+        "Basic User Price": "₦75000.00"
+    },
+    {
+        "Network": "MTN",
+        "Data ID": 173,
+        "Size": "110MB",
+        "Type": "GiftingPlan",
+        "Validity": "1 Days",
+        "Basic User Price": "₦100.00"
+    },
+    {
+        "Network": "MTN",
+        "Data ID": 174,
+        "Size": "230MB",
+        "Type": "GiftingPlan",
+        "Validity": "1 Days",
+        "Basic User Price": "₦200.00"
+    },
+    {
+        "Network": "MTN",
+        "Data ID": 175,
+        "Size": "6GB",
+        "Type": "GiftingPlan",
+        "Validity": "7 Days",
+        "Basic User Price": "₦2500.00"
+    },
+    {
+        "Network": "MTN",
+        "Data ID": 176,
+        "Size": "2.5GB",
+        "Type": "GiftingPlan",
+        "Validity": "2 Days",
+        "Basic User Price": "₦900.00"
+    },
+    {
+        "Network": "MTN",
+        "Data ID": 178,
+        "Size": "12.5GB",
+        "Type": "GiftingPlan",
+        "Validity": "30 Days",
+        "Basic User Price": "₦5500.00"
+    },
+    {
+        "Network": "AIRTEL",
+        "Data ID": 199,
+        "Size": "Airtel Data - 50 Naira - 40MB",
+        "Type": "GiftingPlan",
+        "Validity": "1 Days",
+        "Basic User Price": "₦49.76"
+    },
+    {
+        "Network": "AIRTEL",
+        "Data ID": 200,
+        "Size": "100MB",
+        "Type": "GiftingPlan",
+        "Validity": "1 Days",
+        "Basic User Price": "₦100.00"
+    },
+    {
+        "Network": "AIRTEL",
+        "Data ID": 201,
+        "Size": "200MB",
+        "Type": "GiftingPlan",
+        "Validity": "2 Days",
+        "Basic User Price": "₦200.00"
+    },
+    {
+        "Network": "AIRTEL",
+        "Data ID": 202,
+        "Size": "300MB",
+        "Type": "GiftingPlan",
+        "Validity": "1 Days",
+        "Basic User Price": "₦300.00"
+    },
+    {
+        "Network": "AIRTEL",
+        "Data ID": 203,
+        "Size": "500MB",
+        "Type": "GiftingPlan",
+        "Validity": "7 Days",
+        "Basic User Price": "₦500.00"
+    },
+    {
+        "Network": "AIRTEL",
+        "Data ID": 204,
+        "Size": "1.5GB",
+        "Type": "GiftingPlan",
+        "Validity": "7 Days",
+        "Basic User Price": "₦1000.00"
+    },
+    {
+        "Network": "AIRTEL",
+        "Data ID": 205,
+        "Size": "3GB",
+        "Type": "GiftingPlan",
+        "Validity": "7 Days",
+        "Basic User Price": "₦1500.00"
+    },
+    {
+        "Network": "AIRTEL",
+        "Data ID": 206,
+        "Size": "4GB",
+        "Type": "GiftingPlan",
+        "Validity": "30 Days",
+        "Basic User Price": "₦2500.00"
+    },
+    {
+        "Network": "AIRTEL",
+        "Data ID": 207,
+        "Size": "6GB",
+        "Type": "GiftingPlan",
+        "Validity": "30 Days",
+        "Basic User Price": "₦3000.00"
+    },
+    {
+        "Network": "AIRTEL",
+        "Data ID": 208,
+        "Size": "10GB",
+        "Type": "GiftingPlan",
+        "Validity": "30 Days",
+        "Basic User Price": "₦4000.00"
+    },
+    {
+        "Network": "AIRTEL",
+        "Data ID": 209,
+        "Size": "13GB",
+        "Type": "GiftingPlan",
+        "Validity": "30 Days",
+        "Basic User Price": "₦5000.00"
+    },
+    {
+        "Network": "9MOBILE",
+        "Data ID": 218,
+        "Size": "9mobile 50MB - 50 Naira",
+        "Type": "GiftingPlan",
+        "Validity": "1 Days",
+        "Basic User Price": "₦50.30"
+    },
+    {
+        "Network": "9MOBILE",
+        "Data ID": 219,
+        "Size": "9mobile 100MB - 100 Naira",
+        "Type": "GiftingPlan",
+        "Validity": "1 Days",
+        "Basic User Price": "₦100.55"
+    },
+    {
+        "Network": "9MOBILE",
+        "Data ID": 220,
+        "Size": "9mobile 650MB - 200 Naira",
+        "Type": "GiftingPlan",
+        "Validity": "1 Days",
+        "Basic User Price": "₦200.10"
+    },
+    {
+        "Network": "9MOBILE",
+        "Data ID": 221,
+        "Size": "9mobile 1GB + 100MB (1 day) - 300 Naira",
+        "Type": "GiftingPlan",
+        "Validity": "1 Days",
+        "Basic User Price": "₦300.65"
+    },
+    {
+        "Network": "9MOBILE",
+        "Data ID": 222,
+        "Size": "9mobile 2GB +100MB - 500 Naira - 3 days",
+        "Type": "GiftingPlan",
+        "Validity": "3 Days",
+        "Basic User Price": "₦500.70"
+    },
+    {
+        "Network": "9MOBILE",
+        "Data ID": 223,
+        "Size": "9mobile 4GB (2GB + 2GB Night) - 1000 Naira",
+        "Type": "GiftingPlan",
+        "Validity": "7 Days",
+        "Basic User Price": "₦1000.35"
+    },
+    {
+        "Network": "9MOBILE",
+        "Data ID": 224,
+        "Size": "9mobile 6.2GB (2.2GB+4GB Night) - 1,200 Naira",
+        "Type": "GiftingPlan",
+        "Validity": "30 Days",
+        "Basic User Price": "₦1200.45"
+    },
+
+    {
+    "Network": "9MOBILE",
+    "Data ID": 225,
+    "Size": "9mobile 9.5GB (5.5GB+4GB Night) - 2000 Naira",
+    "Type": "GiftingPlan",
+    "Validity": "30 Days",
+    "Basic User Price": "₦2000.70"
+    },
+    {
+    "Network": "9MOBILE",
+    "Data ID": 226,
+    "Size": "9mobile 15GB - 3,000 Naira",
+    "Type": "GiftingPlan",
+    "Validity": "30 Days",
+    "Basic User Price": "₦3001.05"
+    },
+    {
+    "Network": "9MOBILE",
+    "Data ID": 227,
+    "Size": "9mobile 22GB - 5,000 Naira",
+    "Type": "GiftingPlan",
+    "Validity": "30 Days",
+    "Basic User Price": "₦5001.75"
+    },
+    {
+    "Network": "9MOBILE",
+    "Data ID": 228,
+    "Size": "9mobile 35 GB - 7,000 Naira",
+    "Type": "BigBundles",
+    "Validity": "30 Days",
+    "Basic User Price": "₦7002.45"
+    },
+    {
+    "Network": "9MOBILE",
+    "Data ID": 229,
+    "Size": "9mobile 50GB - 10,000 Naira",
+    "Type": "BigBundles",
+    "Validity": "30 Days",
+    "Basic User Price": "₦10003.50"
+    },
+    {
+    "Network": "9MOBILE",
+    "Data ID": 230,
+    "Size": "9mobile 80GB - 15,000 Naira",
+    "Type": "BigBundles",
+    "Validity": "30 Days",
+    "Basic User Price": "₦15005.25"
+    },
+    {
+    "Network": "9MOBILE",
+    "Data ID": 231,
+    "Size": "9mobile 125GB - 20,000 Naira",
+    "Type": "BigBundles",
+    "Validity": "30 Days",
+    "Basic User Price": "₦20007.00"
+    },
+    {
+    "Network": "MTN",
+    "Data ID": 235,
+    "Size": "MTN 1GB + 1.5mins",
+    "Type": "AwoofData",
+    "Validity": "1 Days",
+    "Basic User Price": "₦500.00"
+    },
+    {
+    "Network": "MTN",
+    "Data ID": 236,
+    "Size": "1.5GB",
+    "Type": "AwoofData",
+    "Validity": "2 Days",
+    "Basic User Price": "₦600.00"
+    },
+    {
+    "Network": "MTN",
+    "Data ID": 237,
+    "Size": "2.5GB",
+    "Type": "AwoofData",
+    "Validity": "2 Days",
+    "Basic User Price": "₦900.00"
+    },
+    {
+    "Network": "MTN",
+    "Data ID": 238,
+    "Size": "6GB",
+    "Type": "AwoofData",
+    "Validity": "7 Days",
+    "Basic User Price": "₦2500.00"
+    },
+    {
+    "Network": "MTN",
+    "Data ID": 239,
+    "Size": "12.5GB",
+    "Type": "AwoofData",
+    "Validity": "30 Days",
+    "Basic User Price": "₦5500.00"
+    },
+    {
+    "Network": "MTN",
+    "Data ID": 240,
+    "Size": "16.5GB+10mins",
+    "Type": "AwoofData",
+    "Validity": "30 Days",
+    "Basic User Price": "₦6500.00"
+    },
+    {
+    "Network": "MTN",
+    "Data ID": 241,
+    "Size": "25GB",
+    "Type": "AwoofData",
+    "Validity": "30 Days",
+    "Basic User Price": "₦9000.00"
+    },
+    {
+    "Network": "MTN",
+    "Data ID": 242,
+    "Size": "75GB",
+    "Type": "AwoofData",
+    "Validity": "30 Days",
+    "Basic User Price": "₦18000.00"
+    },
+    {
+    "Network": "MTN",
+    "Data ID": 243,
+    "Size": "3.2GB",
+    "Type": "AwoofData",
+    "Validity": "2 Days",
+    "Basic User Price": "₦1000.00"
+    },
+    {
+    "Network": "MTN",
+    "Data ID": 244,
+    "Size": "MTN 1GB + 1.5mins",
+    "Type": "GiftingPlan",
+    "Validity": "1 Days",
+    "Basic User Price": "₦500.00"
+    },
+    {
+    "Network": "MTN",
+    "Data ID": 245,
+    "Size": "1.5GB",
+    "Type": "GiftingPlan",
+    "Validity": "2 Days",
+    "Basic User Price": "₦600.00"
+    },
+    {
+    "Network": "MTN",
+    "Data ID": 246,
+    "Size": "3.2GB",
+    "Type": "GiftingPlan",
+    "Validity": "2 Days",
+    "Basic User Price": "₦1000.00"
+    },
+    {
+    "Network": "MTN",
+    "Data ID": 247,
+    "Size": "16.5GB+10mins",
+    "Type": "GiftingPlan",
+    "Validity": "30 Days",
+    "Basic User Price": "₦6500.00"
+    },
+    {
+    "Network": "MTN",
+    "Data ID": 248,
+    "Size": "20GB",
+    "Type": "GiftingPlan",
+    "Validity": "30 Days",
+    "Basic User Price": "₦7500.00"
+    },
+    {
+    "Network": "MTN",
+    "Data ID": 249,
+    "Size": "25GB",
+    "Type": "GiftingPlan",
+    "Validity": "30 Days",
+    "Basic User Price": "₦9000.00"
+    },
+    {
+    "Network": "MTN",
+    "Data ID": 250,
+    "Size": "36GB",
+    "Type": "GiftingPlan",
+    "Validity": "30 Days",
+    "Basic User Price": "₦11000.00"
+    },
+    {
+    "Network": "MTN",
+    "Data ID": 251,
+    "Size": "75GB",
+    "Type": "GiftingPlan",
+    "Validity": "30 Days",
+    "Basic User Price": "₦18000.00"
+    },
+    {
+    "Network": "AIRTEL",
+    "Data ID": 254,
+    "Size": "3GB",
+    "Type": "Corporate2",
+    "Validity": "30 Days",
+    "Basic User Price": "₦1482.00"
+    },
+    {
+    "Network": "AIRTEL",
+    "Data ID": 255,
+    "Size": "6GB",
+    "Type": "Corporate2",
+    "Validity": "7 Days",
+    "Basic User Price": "₦2470.00"
+    },
+    {
+    "Network": "AIRTEL",
+    "Data ID": 256,
+    "Size": "8.5GB",
+    "Type": "Corporate2",
+    "Validity": "7 Days",
+    "Basic User Price": "₦2964.00"
+    },
+    {
+    "Network": "AIRTEL",
+    "Data ID": 257,
+    "Size": "10GB",
+    "Type": "Corporate2",
+    "Validity": "30 Days",
+    "Basic User Price": "₦3952.00"
+    },
+    {
+    "Network": "AIRTEL",
+    "Data ID": 258,
+    "Size": "18GB",
+    "Type": "Corporate2",
+    "Validity": "7 Days",
+    "Basic User Price": "₦4940.00"
+    },
+    {
+    "Network": "AIRTEL",
+    "Data ID": 259,
+    "Size": "25GB",
+    "Type": "Corporate2",
+    "Validity": "30 Days",
+    "Basic User Price": "₦7904.00"
+    },
+    {
+    "Network": "AIRTEL",
+    "Data ID": 260,
+    "Size": "35GB",
+    "Type": "Corporate2",
+    "Validity": "30 Days",
+    "Basic User Price": "₦9880.00"
+    },
+    {
+    "Network": "AIRTEL",
+    "Data ID": 261,
+    "Size": "100GB",
+    "Type": "Corporate2",
+    "Validity": "30 Days",
+    "Basic User Price": "₦19760.00"
+    },
+    {
+    "Network": "MTN",
+    "Data ID": 262,
+    "Size": "165GB",
+    "Type": "GiftingPlan",
+    "Validity": "30 Days",
+    "Basic User Price": "₦35000.00"
+    },
+    {
+    "Network": "MTN",
+    "Data ID": 263,
+    "Size": "2GB",
+    "Type": "AwoofData",
+    "Validity": "2 Days",
+    "Basic User Price": "₦750.00"
+    },
+    {
+    "Network": "MTN",
+    "Data ID": 264,
+    "Size": "2GB",
+    "Type": "GiftingPlan",
+    "Validity": "2 Days",
+    "Basic User Price": "₦750.00"
+    },
+    {
+    "Network": "MTN",
+    "Data ID": 265,
+    "Size": "12.5GB",
+    "Type": "GiftingPlan",
+    "Validity": "30 Days",
+    "Basic User Price": "₦5500.00"
+    },
+    {
+    "Network": "AIRTEL",
+    "Data ID": 275,
+    "Size": "200MB (Whatsapp, Facebook, Instagram, Youtube and Tiktok)",
+    "Type": "SocialMedia",
+    "Validity": "2 Days",
+    "Basic User Price": "₦98.50"
+    },
+    {
+    "Network": "AIRTEL",
+    "Data ID": 276,
+    "Size": "1 GB (Whatsapp, Facebook, Instagram, Youtube and Tiktok)",
+    "Type": "SocialMedia",
+    "Validity": "3 Days",
+    "Basic User Price": "₦295.40"
+    },
+    {
+    "Network": "AIRTEL",
+    "Data ID": 277,
+    "Size": "1.5 GB (Whatsapp, Facebook, Instagram, Youtube and Tiktok)",
+    "Type": "SocialMedia",
+    "Validity": "7 Days",
+    "Basic User Price": "₦492.50"
+    },
+    {
+    "Network": "AIRTEL",
+    "Data ID": 282,
+    "Size": "500 Naira Binge Plan -",
+    "Type": "BingePlans",
+    "Validity": "1 Days",
+    "Basic User Price": "₦492.50"
+    },
+    {
+    "Network": "AIRTEL",
+    "Data ID": 283,
+    "Size": "1.5GB Binge Plan + Youtube & Social Plan Data",
+    "Type": "BingePlans",
+    "Validity": "2 Days",
+    "Basic User Price": "₦591.00"
+    },
+    {
+    "Network": "AIRTEL",
+    "Data ID": 284,
+    "Size": "2GB Binge Plan + Youtube & Social Plan Data",
+    "Type": "BingePlans",
+    "Validity": "2 Days",
+    "Basic User Price": "₦738.75"
+    },
+    {
+    "Network": "AIRTEL",
+    "Data ID": 285,
+    "Size": "3GB Binge Plan + Youtube & Social Plans Data",
+    "Type": "BingePlans",
+    "Validity": "2 Days",
+    "Basic User Price": "₦985.00"
+    },
+    {
+    "Network": "AIRTEL",
+    "Data ID": 286,
+    "Size": "13GB MIFI 5 Data - MiFi Only",
+    "Type": "MiFi",
+    "Validity": "30 Days",
+    "Basic User Price": "₦4925.00"
+    },
+    {
+    "Network": "AIRTEL",
+    "Data ID": 287,
+    "Size": "35GB MIFI 10 Data - MiFi Only",
+    "Type": "MiFi",
+    "Validity": "30 Days",
+    "Basic User Price": "₦9850.00"
+    },
+    {
+    "Network": "AIRTEL",
+    "Data ID": 288,
+    "Size": "60GB MIFI 15 Data - MiFi Only",
+    "Type": "MiFi",
+    "Validity": "30 Days",
+    "Basic User Price": "₦14775.00"
+    },
+    {
+    "Network": "AIRTEL",
+    "Data ID": 289,
+    "Size": "100GB Unlimited Uiltra 20 - Router Only",
+    "Type": "Router",
+    "Validity": "30 Days",
+    "Basic User Price": "₦19700.00"
+    },
+    {
+    "Network": "AIRTEL",
+    "Data ID": 290,
+    "Size": "Unlimited 20MBPS Data - Router Only",
+    "Type": "Router",
+    "Validity": "30 Days",
+    "Basic User Price": "₦29550.00"
+    },
+    {
+    "Network": "AIRTEL",
+    "Data ID": 291,
+    "Size": "Unlimited 60MBPS Data - Router Only",
+    "Type": "Router",
+    "Validity": "30 Days",
+    "Basic User Price": "₦49250.00"
+    },
+    {
+    "Network": "AIRTEL",
+    "Data ID": 292,
+    "Size": "Unlimited 60MBPS Data - Router Only",
+    "Type": "Router",
+    "Validity": "90 Days",
+    "Basic User Price": "₦78800.00"
+    },
+    {
+    "Network": "AIRTEL",
+    "Data ID": 293,
+    "Size": "Unlimited 60MBPS Data - Router Only",
+    "Type": "Router",
+    "Validity": "90 Days",
+    "Basic User Price": "₦132975.00"
+    },
+    {
+    "Network": "AIRTEL",
+    "Data ID": 294,
+    "Size": "Unlimited 20MBPS Data - Router Only",
+    "Type": "Router",
+    "Validity": "120 Days",
+    "Basic User Price": "₦147750.00"
+    },
+    {
+    "Network": "AIRTEL",
+    "Data ID": 295,
+    "Size": "100GB",
+    "Type": "BigBundles",
+    "Validity": "30 Days",
+    "Basic User Price": "₦197"
+    },
+
+    {
+        "Network": "AIRTEL",
+        "Data ID": 296,
+        "Size": "150GB",
+        "Type": "BigBundles",
+        "Validity": "30 Days",
+        "Basic User Price": "₦29550.00"
+    },
+    {
+    "Network": "AIRTEL",
+    "Data ID": 297,
+    "Size": "200GB",
+    "Type": "BigBundles",
+    "Validity": "90 Days",
+    "Basic User Price": "₦49250.00"
+    },
+    {
+    "Network": "AIRTEL",
+    "Data ID": 298,
+    "Size": "400GB",
+    "Type": "BigBundles",
+    "Validity": "365 Days",
+    "Basic User Price": "₦98500.00"
+    },
+    {
+    "Network": "MTN",
+    "Data ID": 299,
+    "Size": "150GB 2-Month Plan",
+    "Type": "BigBundles",
+    "Validity": "60 Days",
+    "Basic User Price": "₦39400.00"
+    },
+    {
+    "Network": "MTN",
+    "Data ID": 300,
+    "Size": "200GB 2-Month Plan",
+    "Type": "BigBundles",
+    "Validity": "60 Days",
+    "Basic User Price": "₦49250.00"
+    },
+    {
+    "Network": "MTN",
+    "Data ID": 301,
+    "Size": "480GB 3-Month Plan",
+    "Type": "BigBundles",
+    "Validity": "90 Days",
+    "Basic User Price": "₦118200.00"
+    },
+    {
+    "Network": "MTN",
+    "Data ID": 302,
+    "Size": "6.75GB",
+    "Type": "XtraSpecial",
+    "Validity": "30 Days",
+    "Basic User Price": "₦2955.00"
+    },
+    {
+    "Network": "MTN",
+    "Data ID": 303,
+    "Size": "14.5GB",
+    "Type": "XtraSpecial",
+    "Validity": "30 Days",
+    "Basic User Price": "₦4925.00"
+    },
+    {
+    "Network": "MTN",
+    "Data ID": 304,
+    "Size": "500MB",
+    "Type": "SME",
+    "Validity": "7 Days",
+    "Basic User Price": "₦495.00"
+    },
+    {
+    "Network": "AIRTEL",
+    "Data ID": 305,
+    "Size": "1GB",
+    "Type": "GiftingPlan",
+    "Validity": "7 Days",
+    "Basic User Price": "₦800.00"
+    },
+    {
+    "Network": "AIRTEL",
+    "Data ID": 306,
+    "Size": "2GB",
+    "Type": "GiftingPlan",
+    "Validity": "30 Days",
+    "Basic User Price": "₦1500.00"
+    },
+    {
+    "Network": "AIRTEL",
+    "Data ID": 307,
+    "Size": "3GB",
+    "Type": "GiftingPlan",
+    "Validity": "30 Days",
+    "Basic User Price": "₦2000.00"
+    },
+    {
+    "Network": "AIRTEL",
+    "Data ID": 308,
+    "Size": "6GB",
+    "Type": "GiftingPlan",
+    "Validity": "7 Days",
+    "Basic User Price": "₦2500.00"
+    },
+    {
+    "Network": "AIRTEL",
+    "Data ID": 309,
+    "Size": "8.5GB",
+    "Type": "GiftingPlan",
+    "Validity": "7 Days",
+    "Basic User Price": "₦3000.00"
+    },
+    {
+    "Network": "AIRTEL",
+    "Data ID": 310,
+    "Size": "18GB",
+    "Type": "GiftingPlan",
+    "Validity": "7 Days",
+    "Basic User Price": "₦5000.00"
+    },
+    {
+    "Network": "AIRTEL",
+    "Data ID": 311,
+    "Size": "18GB",
+    "Type": "GiftingPlan",
+    "Validity": "30 Days",
+    "Basic User Price": "₦6000.00"
+    },
+    {
+    "Network": "AIRTEL",
+    "Data ID": 312,
+    "Size": "25GB",
+    "Type": "GiftingPlan",
+    "Validity": "30 Days",
+    "Basic User Price": "₦8000.00"
+    },
+    {
+    "Network": "AIRTEL",
+    "Data ID": 313,
+    "Size": "35GB",
+    "Type": "GiftingPlan",
+    "Validity": "30 Days",
+    "Basic User Price": "₦10000.00"
+    },
+    {
+    "Network": "AIRTEL",
+    "Data ID": 314,
+    "Size": "60GB",
+    "Type": "GiftingPlan",
+    "Validity": "30 Days",
+    "Basic User Price": "₦15000.00"
+    },
+    {
+    "Network": "AIRTEL",
+    "Data ID": 315,
+    "Size": "100GB",
+    "Type": "GiftingPlan",
+    "Validity": "30 Days",
+    "Basic User Price": "₦20000.00"
+    },
+    {
+    "Network": "MTN",
+    "Data ID": 316,
+    "Size": "1.8GB + 35 Minutes Talktime  + 150 Bulk SMS units",
+    "Type": "ThryveData",
+    "Validity": "30 Days",
+    "Basic User Price": "₦1500.00"
+    },
+    {
+    "Network": "MTN",
+    "Data ID": 317,
+    "Size": "10GB + ₦3000 Talktime + 100 Bulk SMS units + free Ad credits to reach up to 5,000 impressions on FB& IG using MTN Engauge",
+    "Type": "ThryveData",
+    "Validity": "30 Days",
+    "Basic User Price": "₦3000.00"
+    },
+    {
+    "Network": "MTN",
+    "Data ID": 340,
+    "Size": "1.2GB",
+    "Type": "SME",
+    "Validity": "7 Days",
+    "Basic User Price": "₦750.00"
+    }
+]
