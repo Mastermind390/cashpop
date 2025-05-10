@@ -29,6 +29,10 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 PAYSTACK_SECRET_KEY = os.getenv("PAYSTACK_SECRET_KEY")
 # PAYSTACK_CALLBACK_URL = 'http://yourdomain.com/payment/callback/'
 
+VTPASS_API_KEY = os.getenv("VTPASS_API_KEY")
+VTPASS_PUBLIC_KEY = os.getenv("VTPASS_PUBLIC_KEY")
+VTPASS_SECRET_KEY = os.getenv("VTPASS_SECRET_KEY")
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG") == "True"
 

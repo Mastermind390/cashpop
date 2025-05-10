@@ -29,6 +29,7 @@ from .utils import airtime_vtu
 from .utils import today_date
 from decimal import Decimal
 import uuid
+from dateutil.relativedelta import relativedelta
 
 
 def home(request):
@@ -806,5 +807,26 @@ def vtu_data_and_airtime(request):
 
 
 def renew_sub(request):
+    user = request.user
+    userprofile = user.userprofile
+    user_wallet_balance = userprofile.balance
+    todays_date = today_date.get_todays_date()
+    user_next_subscription_date = Subscription.objects.filter(user=user)[0]
+    next_sub_date = todays_date + relativedelta(months=1)
+    sub_amount = 600
+    referal_percentage = 20
+    referal_bonus = (referal_percentage / 100) * sub_amount
+    # print(referal_bonus)
 
+    if request.method == "POST":
+        if todays_date < user_next_subscription_date.next_billing_date:
+            messages.error(request, "sorry! your subscription is still on")
+            return redirect("base:dashboard")
+        elif user_wallet_balance >= sub_amount:
+            userprofile.balance -= sub_amount
+            user_next_subscription_date.next_billing_date = next_sub_date
+            userprofile.referred_by.balance += referal_bonus
+            messages.success(request, "thank you for continuing with us")
+            return redirect("base:dashboard")
+            
     return render(request, "base/renew_sub.html")

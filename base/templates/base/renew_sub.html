@@ -16,12 +16,12 @@
         
         <div>
           <div class="profile-tab-content" id="payments">
-          <h2>Confirm Reject</h2>
-          <h3> {{task.task.title}} </h3>
-          <p>completed by {{task.user.first_name}}</p>
+          <h2>Confirm Renew</h2>
+          <p>&#8358;500 will be deducted from your wallet for the renewal of your subscription. <br> Are you sure you want to continue</p>
             <form action="" method="POST">
                 {% csrf_token %}
-                <input class="approve" type="submit" value = "Reject">
+                <input class="approve" type="submit" value = "Renew">
+                <a class="start-link" href="{% url "base:dashboard" %}">Go Back</a>
             </form>
         </div>
         </div>
