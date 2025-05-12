@@ -43,24 +43,27 @@
               </div>
               <div>
                 <h3>Withdrawal History</h3>
-                {% for withdraw in withdraws %}
-                {% if withdraw.user == request.user %}
-                <div class="withdraw-wrapper">
-                  <div class="amount-container">
-                    <h4>&#8358;{{withdraw.amount}}</h4>
-                    <span>{{withdraw.requested_at | timesince}} ago</span>
-                  </div>
-                  <div>
-                    {% if withdraw.status == pending %}
-                    <h5  class="status-pending"> {{withdraw.status}} </h5>
-                    {% else %}
-                    <h5  class="status-completed"> {{withdraw.status}} </h5>
+                <div class="scroll-container">
+                  <div class="scrollable-content">
+                    {% for withdraw in withdraws %}
+                    {% if withdraw.user == request.user %}
+                    <div class="withdraw-wrapper">
+                      <div class="amount-container">
+                        <h4>&#8358;{{withdraw.amount}}</h4>
+                        <span>{{withdraw.requested_at | timesince}} ago</span>
+                      </div>
+                      <div>
+                        {% if withdraw.status == pending %}
+                        <h5  class="status-pending"> {{withdraw.status}} </h5>
+                        {% else %}
+                        <h5  class="status-completed"> {{withdraw.status}} </h5>
+                        {% endif %}
+                      </div>
+                    </div>
                     {% endif %}
+                    {% endfor %}
                   </div>
                 </div>
-                {% endif %}
-                
-                {% endfor %}
               </div>
             </div>
           </div>

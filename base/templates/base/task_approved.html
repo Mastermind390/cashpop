@@ -1,0 +1,27 @@
+{% extends "base/main.html" %}
+
+{% block header %}
+  
+{% endblock header %}
+
+{% block mobile_navbar %}
+  
+{% endblock mobile_navbar %}
+
+{% block content %}
+
+<main>
+    <div class="task-approved-container">
+        <h2>Task Approved!</h2>
+        <p>Hi {{ user.first_name }},</p>
+        <p>Your submission for the task "<strong>{{ task_title }}</strong>" has been approved.</p>
+        <p>You've earned <strong>&#8358;{{ reward }}</strong>. Great job!</p>
+        <p>Thanks,<br>The Team</p>
+    </div>
+</main>
+
+{% endblock content %}
+
+{% block footer %}
+  
+{% endblock footer %}

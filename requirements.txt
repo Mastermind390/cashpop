@@ -1,2 +1,5 @@
 django
 pymysql
+python-dateutil
+celery 
+redis

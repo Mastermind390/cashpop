@@ -1,12 +1,13 @@
 import requests
 import json
 import datetime
+from django.conf import settings
 
 #SK_124f1e0e5906efb897f3959a1768c3b8e6309725f9b
 def _post_request_headers():
     headers = {
-    'api-key': '4e85c5b543323d420bb26abf4da7ff8c',
-    'secret-key': 'SK_9331f08f9bfe1fda8ed70420a67229bf333259b73b3',
+    'api-key': settings.VTPASS_API_KEY,
+    'secret-key': settings.VTPASS_SECRET_KEY,
     'Content-Type': 'application/json'
     }
     return headers

@@ -1,0 +1,27 @@
+{% extends "base/main.html" %}
+
+{% block header %}
+  
+{% endblock header %}
+
+{% block mobile_navbar %}
+  
+{% endblock mobile_navbar %}
+
+{% block content %}
+
+<main>
+    <div class="task-rejected-container">
+        <h2>Task Rejected</h2>
+        <p>Hi {{ user.first_name }},</p>
+        <p>Unfortunately, your submission for the task "<strong>{{ task_title }}</strong>" has been rejected.</p>
+        <p>If you believe this was a mistake, feel free to reach out.</p>
+        <p>Thanks,<br>The Team</p>
+    </div>
+</main>
+
+{% endblock content %}
+
+{% block footer %}
+  
+{% endblock footer %}

@@ -53,17 +53,21 @@
               </div>
               <div>
                 <h3>Top-Ups History</h3>
-                {% for top_up in top_up_history %}
-                <div class="withdraw-wrapper">
-                  <div class="amount-container">
-                    <h4>{{top_up.type.capitalize}}</h4>
-                    <span class="top_up_time">{{top_up.created_at | timesince}} ago</span>
-                  </div>
-                  <div>
-                    <span class="top_up_amount">&#8358;{{top_up.amount}}</span>
+                <div class="scroll-container">
+                  <div class="scrollable-content">
+                    {% for top_up in top_up_history %}
+                    <div class="withdraw-wrapper">
+                      <div class="amount-container">
+                        <h4>{{top_up.type.capitalize}}</h4>
+                        <span class="top_up_time">{{top_up.created_at | timesince}} ago</span>
+                      </div>
+                      <div>
+                        <span class="top_up_amount">&#8358;{{top_up.amount}}</span>
+                      </div>
+                    </div>
+                    {% endfor %}
                   </div>
                 </div>
-                {% endfor %}
               </div>
             </div>
           </div>

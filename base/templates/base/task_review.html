@@ -17,43 +17,46 @@
         <div>
           <div class="profile-tab-content" id="payments">
           <h2>Review Tasks</h2>
-          {% for task in user_tasks %}
-          {% if task.task.creator == request.user %}
-          <div class="proof-container">
-            <div>
-              <span>{{task.user.first_name}} completed</span>
-              <h3>{{task.task.title}}</h3>
-              {% if task.proof_image and task.status != "approved" %}
-              <a class="start-link" href="{{task.proof_image.url}}" target="blank">view proof</a> <br>
-              {% else %}
-              {% comment %} <span>No image provided</span> {% endcomment %}
-              {% endif %}
-              <p class="username">with this username @{{task.proof_username}}</p>
-              <span>{{task.completed_at | timesince}} ago</span>
-            </div>
+          <div class="scroll-container">
+           <div class="scrollable-content">
+             {% for task in user_tasks %}
+              {% if task.task.creator == request.user %}
+              <div class="proof-container">
+                <div>
+                  <span class="user-name">{{task.user.first_name}} completed</span>
+                  <h4>{{task.task.title}}</h4>
+                  {% if task.proof_image and task.status == "pending" %}
+                  <a class="start-link" href="{{task.proof_image.url}}" target="blank">view proof</a> <br>
+                  {% else %}
+                  {% comment %} <span>No image provided</span> {% endcomment %}
+                  {% endif %}
+                  <p class="username">with this username @{{task.proof_username}}</p>
+                  <span class="task-time">{{task.completed_at | timesince}} ago</span>
+                </div>
 
-            <div class="review-btn">
-              {% if task.status == "approved" %}
-              <div>
-                {% if task.status == "approved" %}
-                <span class="task-history-status completed"> {{task.status}} </span>
-                {% else %}
-                <span class="task-history-status rejected"> {{task.status}} </span>
-                {% endif %}
+                <div class="review-btn">
+                  {% if task.status == "approved" %}
+                  <div>
+                    {% if task.status == "approved" %}
+                    <span class="task-history-status completed"> {{task.status}} </span>
+                    {% else %}
+                    <span class="task-history-status rejected"> {{task.status}} </span>
+                    {% endif %}
+                  </div>
+                  {% else %}
+                  <div class="approve-btn">
+                    <a  class="approve" href=" {% url "base:confirm-approve" task.id %} ">Approve</a>
+                  </div>
+                  <div>
+                    <a  class="reject" href=" {% url "base:confirm-reject" task.id %} ">Reject</a>
+                  </div>
+                  {% endif %}
+                </div>
               </div>
-              {% else %}
-              <div class="approve-btn">
-                <a  class="approve" href=" {% url "base:confirm-approve" task.id %} ">Approve</a>
-               </div>
-               <div>
-                 <a  class="reject" href=" {% url "base:confirm-reject" task.id %} ">Reject</a>
-               </div>
-               {% endif %}
-            </div>
+              {% endif %}
+              {% endfor %}
+           </div>
           </div>
-          
-          {% endif %}
-          {% endfor %}
         </div>
         </div>
       </div>

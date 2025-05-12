@@ -17,27 +17,30 @@
         <div class="profile-tab-content active" id="history">
           <h2>Recent Tasks</h2>
           <div class="task-history">
-            {% for task in usertask %}
-            {% if request.user.id == task.user.id %}
-            <div class="task-history-item">
-              <div class="task-history-details">
-                <h3>{{task.task.title}}</h3>
-                <p class="task-history-date">{{task.completed_at | timesince}}</p>
-              </div>
-              <div class="task-history-reward">&#8358;{{task.task.reward}}</div>
-              <div>
-                {% if task.status == "completed" %}
-                <div class="task-history-status completed">{{task.status}}</div>
-                {% elif task.status == "pending" %}
-                <div class="task-history-status pending">{{task.status}}</div>
-                {% else %}
-                <div class="task-history-status completed">{{task.status}}</div>
+           <div class="scroll-container">
+            <div class="scrollable-content">
+               {% for task in usertask %}
+                {% if request.user.id == task.user.id %}
+                <div class="task-history-item">
+                  <div class="task-history-details">
+                    <h3>{{task.task.title}}</h3>
+                    <p class="task-history-date">{{task.completed_at | timesince}}</p>
+                  </div>
+                  <div class="task-history-reward">&#8358;{{task.task.reward}}</div>
+                  <div>
+                    {% if task.status == "completed" %}
+                    <div class="task-history-status completed">{{task.status}}</div>
+                    {% elif task.status == "pending" %}
+                    <div class="task-history-status pending">{{task.status}}</div>
+                    {% else %}
+                    <div class="task-history-status completed">{{task.status}}</div>
+                    {% endif %}
+                  </div>
+                </div>
                 {% endif %}
-              </div>
+                {% endfor %}
             </div>
-            
-            {% endif %}
-            {% endfor %}
+           </div>
           </div>
         </div>
       </div>

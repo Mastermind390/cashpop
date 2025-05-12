@@ -21,7 +21,11 @@
           <p>completed by {{task.user.first_name}}</p>
             <form action="" method="POST">
                 {% csrf_token %}
+                {% if task.status == "approve" %}
+                <span>task approved</span>
+                {% else %}
                 <input class="approve" type="submit" value = "Approve">
+                {% endif %}
             </form>
         </div>
         </div>

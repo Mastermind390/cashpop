@@ -17,22 +17,26 @@
         <div>
           <div class="profile-tab-content" id="payments">
           <h2>Review Tasks</h2>
-          {% for task in tasks %}
-          <div class="proof-container">
-            <div>
-              <h4 class="task-title">{{task.title}}</h4>
-              <span class="task-created">{{task.created_at | timesince}} ago</span>
+            <div class="scroll-container">
+              <div class="scrollable-content">
+                 {% for task in tasks %}
+                <div class="proof-container">
+                  <div>
+                    <h4 class="task-title">{{task.title}}</h4>
+                    <span class="task-created">{{task.created_at | timesince}} ago</span>
+                  </div>
+                  <div>
+                    <span class="task-badge difficulty easy">{{task.num_of_completed}} / {{task.amount_tasker}}</span> <br>
+                    {% if  task.num_of_completed >= task.amount_tasker %}
+                    <span class="task-complete">complete</span>
+                    {% else %}
+                    <span class="task-running">running</span>
+                    {% endif %}
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
             </div>
-            <div>
-              <span class="task-badge difficulty easy">{{task.num_of_completed}} / {{task.amount_tasker}}</span> <br>
-              {% if  task.num_of_completed >= task.amount_tasker %}
-              <span class="task-complete">complete</span>
-              {% else %}
-              <span class="task-running">running</span>
-              {% endif %}
-            </div>
-          </div>
-          {% endfor %}
         </div>
         </div>
       </div>

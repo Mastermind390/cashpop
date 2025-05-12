@@ -1,10 +1,11 @@
   <!-- Header -->
+   {% load static %}
   <header class="header">
     <div class="container">
       <div class="header-content">
         <div class="logo">
           <a href=" {% url "base:home" %} ">
-            <span class="logo-icon">✨</span>
+            <img class="logo-icon" src=" {% static "images/cashpop-logo.png" %}" alt="">
             <span class="logo-text">CashPop</span>
           </a>
         </div>

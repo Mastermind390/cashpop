@@ -30,6 +30,8 @@ from .utils import today_date
 from decimal import Decimal
 import uuid
 from dateutil.relativedelta import relativedelta
+from django.core.mail import send_mass_mail
+from base.tasks import send_new_task_emails
 
 
 def home(request):
@@ -258,7 +260,7 @@ def profile(request):
     userprofile.streak += streaks
     # userprofile.save()
     
-    usertask = UserTask.objects.all()
+    usertask = UserTask.objects.filter(status="pending").order_by("-completed_at")
 
     context = {"page" : page, "usertask" : usertask}
         
@@ -321,6 +323,32 @@ def createTask(request):
             userprofile.balance -= task_order
             userprofile.locked_balance += task_order
             userprofile.save()
+
+            # Get all active users' emails except the creator
+            active_users = User.objects.filter(is_active=True).exclude(id=user.id).values_list('username', flat=True)
+
+            subject = "🚨 New Task Alert!"
+            message = f"A new task titled '{title}' has just been posted. Log in to your account now to check it out!"
+
+            # # Prepare messages
+            # email_messages = [
+            #     (subject, message, 'noreply@cashpop.com', [email])
+            #     for email in active_users if email
+            # ]
+            # print(email_messages)
+
+            # # Send broadcast email
+            # send_mass_mail(email_messages, fail_silently=True)
+
+            context = {
+                "task_title": title,
+                "task_category": category,
+                "task_description": description,
+                "task_minutes": minutes,
+                "task_reward": reward,
+                "task_link": link,
+            }
+            send_new_task_emails.delay(subject, message, 'noreply@cashpop.com', list(active_users))
             return redirect("base:dashboard")
 
     return render(request, "base/create_task.html", {"form" : form})
@@ -454,7 +482,7 @@ def account(request):
 
 @login_required(login_url="base:login")
 def task_review(request):
-    user_tasks = UserTask.objects.filter(task__creator=request.user)
+    user_tasks = UserTask.objects.filter(task__creator=request.user, status="pending").order_by("-completed_at")[:10]
 
     user = request.user
     streaks = get_login_streak(user)
@@ -471,10 +499,9 @@ def approve(request, pk):
         # Lock the row to prevent concurrent updates
         task = UserTask.objects.select_for_update().get(id=pk)
 
-        # Prevent duplicate approval
-        # if task.status != "pending":
-        #     messages.warning(request, "This task has already been reviewed.")
-        #     return redirect("base:task-review")
+        if task.status == "approved":
+            messages.error(request, "task has already been approved")
+            return redirect("base:dashboard")
 
         # Check if the task still has available slots
         if task.task.amount_tasker <= 0:
@@ -482,11 +509,7 @@ def approve(request, pk):
             messages.error(request, "No available slots left for this task.")
             return redirect("base:task-review")
 
-        # Check if the creator has enough locked balance
         creator_profile = task.task.creator.userprofile
-        # if creator_profile.locked_balance < task.task.reward:
-        #     messages.error(request, "Insufficient locked balance to approve this task.")
-        #     return redirect("base:task-review")
 
         # 1. Approve the user task
         task.status = "approved"
@@ -509,6 +532,18 @@ def approve(request, pk):
         user_profile.save()
 
         messages.success(request, "Task approved successfully!")
+        subject = "Task Approved"
+        from_email = "noreply@yourdomain.com"
+        to_email = [task.user.username]
+
+        html_content = render_to_string("base/task_approved.html", {
+            "user": task.user,
+            "task_title": task.task.title,
+            "reward": task.task.reward
+        })
+        email = EmailMultiAlternatives(subject, "", from_email, to_email)
+        email.attach_alternative(html_content, "text/html")
+        email.send()
         return redirect("base:task-review")
 
     return render(request, "base/approve.html", {"task": task})
@@ -518,8 +553,25 @@ def reject(request, pk):
     task = get_object_or_404(UserTask, id=pk)
 
     if request.method == "POST":
+
+        if task.status == "rejected":
+            messages.error(request)
+            return redirect("base:dashboard")
+
         task.status = "rejected"
         task.save()
+        subject = "Task Rejected"
+        from_email = "noreply@yourdomain.com"
+        to_email = [task.user.username]
+
+        html_content = render_to_string("emails/task_rejected.html", {
+            "user": task.user,
+            "task_title": task.task.title
+        })
+
+        email = EmailMultiAlternatives(subject, "", from_email, to_email)
+        email.attach_alternative(html_content, "text/html")
+        email.send()
         return redirect("base:task-review")
     return render(request, "base/task_review.html", {"task" : task})
 
