@@ -33,8 +33,13 @@ VTPASS_API_KEY = os.getenv("VTPASS_API_KEY")
 VTPASS_PUBLIC_KEY = os.getenv("VTPASS_PUBLIC_KEY")
 VTPASS_SECRET_KEY = os.getenv("VTPASS_SECRET_KEY")
 
+ENVIRONMENT = os.getenv("ENVIRONMENT")
+
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DEBUG") == "True"
+if ENVIRONMENT == "DEVELOPMENT":
+    DEBUG = os.getenv("DEBUG") == "True"
+else:
+    DEBUG = os.getenv("DEBUG") == "False"
 
 ALLOWED_HOSTS = ["7098-102-134-16-210.ngrok-free.app", 'localhost', '127.0.0.1']
 CSRF_TRUSTED_ORIGINS = ["https://7098-102-134-16-210.ngrok-free.app"]
@@ -157,6 +162,10 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 
 # Redis broker settings
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
-CELERY_ACCEPT_CONTENT = ['json']
-CELERY_TASK_SERIALIZER = 'json'
+# if ENVIRONMENT == "DEVELOPEMENT":
+#     CELERY_BROKER_URL = 'redis://localhost:6379/0'
+# else:
+#     CELERY_BROKER_URL = 'redis://default:UPIvTbLVzNADexCdFObBmnGIvhqZGkkN@redis.railway.internal:6379'
+    
+# CELERY_ACCEPT_CONTENT = ['json']
+# CELERY_TASK_SERIALIZER = 'json'

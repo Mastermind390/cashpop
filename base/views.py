@@ -229,7 +229,7 @@ def dashboard(request):
     # Filter tasks by category
     category = request.GET.get("category", "all")
     if category == "all":
-        available_tasks = Task.objects.filter(is_active=True)
+        available_tasks = Task.objects.filter(is_active=True).order_by('-created_at')
     else:
         available_tasks = Task.objects.filter(is_active=True, category__icontains=category)
     
@@ -330,16 +330,6 @@ def createTask(request):
             subject = "🚨 New Task Alert!"
             message = f"A new task titled '{title}' has just been posted. Log in to your account now to check it out!"
 
-            # # Prepare messages
-            # email_messages = [
-            #     (subject, message, 'noreply@cashpop.com', [email])
-            #     for email in active_users if email
-            # ]
-            # print(email_messages)
-
-            # # Send broadcast email
-            # send_mass_mail(email_messages, fail_silently=True)
-
             context = {
                 "task_title": title,
                 "task_category": category,
@@ -348,7 +338,7 @@ def createTask(request):
                 "task_reward": reward,
                 "task_link": link,
             }
-            send_new_task_emails.delay(subject, message, 'noreply@cashpop.com', list(active_users))
+            # send_new_task_emails.delay(subject, message, 'noreply@cashpop.com', list(active_users))
             return redirect("base:dashboard")
 
     return render(request, "base/create_task.html", {"form" : form})
