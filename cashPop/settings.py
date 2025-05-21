@@ -42,7 +42,7 @@ if ENVIRONMENT == "DEVELOPMENT":
 else:
     DEBUG = os.getenv("DEBUG") == "False"
 
-ALLOWED_HOSTS = ["7098-102-134-16-210.ngrok-free.app", 'localhost', '127.0.0.1','https://cashpop.onrender.com/']
+ALLOWED_HOSTS = ["7098-102-134-16-210.ngrok-free.app", 'localhost', '127.0.0.1','cashpop.onrender.com/']
 CSRF_TRUSTED_ORIGINS = ["https://7098-102-134-16-210.ngrok-free.app"]
 
 # AUTH_USER_MODEL = 'base.User'
