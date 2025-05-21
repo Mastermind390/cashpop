@@ -15,10 +15,12 @@ dj-database-url==2.3.0
 Django==5.1.7
 django-anymail==13.0
 django-pwa==2.0.1
+gunicorn==23.0.0
 idna==3.10
 kombu==5.5.3
 mysqlclient==2.2.7
 ngrok==1.4.0
+packaging==25.0
 pillow==11.1.0
 prompt_toolkit==3.0.51
 psycopg2-binary==2.9.10
