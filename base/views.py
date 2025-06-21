@@ -24,7 +24,7 @@ from django.urls import reverse
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
-from .utils.data_vtu import get_data_options, purchase_data
+from .utils.data_vtu import get_data_options, purchase_data, get_vt_pass_balance
 from .utils import airtime_vtu
 from .utils import today_date
 from decimal import Decimal
@@ -32,15 +32,29 @@ import uuid
 from dateutil.relativedelta import relativedelta
 from django.core.mail import send_mass_mail
 from base.tasks import send_new_task_emails
-
+from django.db.models import Sum
+from django.contrib.auth.decorators import user_passes_test
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import CallbackContext
+import telegram
+from django.conf import settings
 
 def home(request):
     if request.user.is_authenticated:
         return redirect("base:dashboard")
 
-    tasks = Task.objects.all()[:3]
+    return render(request, "base/home.html")
 
-    return render(request, "base/index.html", {"tasks" : tasks})
+# def home(request):
+#     if request.user.is_authenticated:
+#         return redirect("base:dashboard")
+
+#     # if not request.user.is_authenticated:
+#     #     return redirect("base:login")
+
+#     tasks = Task.objects.all()[:3]
+
+#     return render(request, "base/index.html", {"tasks" : tasks})
 
 
 def registerPage(request):
@@ -347,36 +361,75 @@ def createTask(request):
 @login_required(login_url="base:login")
 def task_details(request, pk):
     task = get_object_or_404(Task, title=pk)
+
     user = User.objects.get(id=request.user.id)
-    usertask = UserTask.objects.filter(user=user, status="pending")
-    pending_task_ids = usertask.values_list("task_id", flat=True)
+
+    pending_usertask = UserTask.objects.filter(user=user, status="pending")
+
+    rejected_usertask = UserTask.objects.filter(user=user, status="rejected")
+
+    pending_task_ids = pending_usertask.values_list("task_id", flat=True)
+
+    reject_tasks_ids = rejected_usertask.values_list("task_id", flat=True)
+
     todays_date = today_date.get_todays_date()
+
     user_next_subscription_date = Subscription.objects.filter(user=user)[0]
+
     is_subscription_expired = todays_date > user_next_subscription_date.next_billing_date
     print(is_subscription_expired)
 
+    user_has_pending = task.id in pending_task_ids
+    user_has_rejected = task.id in reject_tasks_ids
+
+    existing_rejected = UserTask.objects.filter(user=user, task=task, status="rejected").first()
+
     if request.method == "POST":
         if is_subscription_expired:
-            messages.error(request, "Sorry!, your subscription has expired. You subscribe for this month to continue.")
+            messages.error(request, "Sorry!, your subscription has expired. You need to subscribe for this month to continue.")
             return redirect("base:dashboard")
         else:
             proof_username = request.POST.get("proof")
             proof_image = request.FILES.get("screenshot")
 
-            submitted_task = UserTask.objects.create(
-                user = request.user,
-                task = task,
-                proof_image = proof_image,
-                proof_username = proof_username,
-                status = "pending"
-            )
-            submitted_task.save()
+            if existing_rejected:
+                existing_rejected.proof_username = request.POST.get("proof")
+                existing_rejected.proof_image = request.FILES.get("screenshot")
+                existing_rejected.status = "pending"
+                existing_rejected.save()
+            else:
+                UserTask.objects.create(
+                user=request.user,
+                task=task,
+                proof_image=proof_image,
+                proof_username=proof_username,
+                status="pending"
+    )
+
+            subject = "Task Approved"
+            from_email = "noreply@yourdomain.com"
+            to_email = [task.creator.username]
+
+            html_content = render_to_string("base/task_approved.html", {
+                "creator": task.creator,
+                "user" : user,
+                "task_title": task.title,
+                "reward": task.reward
+            })
+            email = EmailMultiAlternatives(subject, "", from_email, to_email)
+            email.attach_alternative(html_content, "text/html")
+            email.send()
+
             return redirect("base:dashboard")
 
     context = {
         "task" : task,
         "pending_task_ids" : pending_task_ids,
+        "rejected_task_ids" : reject_tasks_ids,
+        "user_has_pending" : user_has_pending,
+        "user_has_rejected" : user_has_rejected,
     }
+
     return render(request, "base/task_details.html", context)
 
 @login_required(login_url="base:login")
@@ -489,10 +542,6 @@ def approve(request, pk):
         # Lock the row to prevent concurrent updates
         task = UserTask.objects.select_for_update().get(id=pk)
 
-        if task.status == "approved":
-            messages.error(request, "task has already been approved")
-            return redirect("base:dashboard")
-
         # Check if the task still has available slots
         if task.task.amount_tasker <= 0:
             task.task.is_active=False
@@ -543,18 +592,14 @@ def reject(request, pk):
     task = get_object_or_404(UserTask, id=pk)
 
     if request.method == "POST":
-
-        if task.status == "rejected":
-            messages.error(request)
-            return redirect("base:dashboard")
-
         task.status = "rejected"
         task.save()
+    
         subject = "Task Rejected"
         from_email = "noreply@yourdomain.com"
         to_email = [task.user.username]
 
-        html_content = render_to_string("emails/task_rejected.html", {
+        html_content = render_to_string("base/task_rejected.html", {
             "user": task.user,
             "task_title": task.task.title
         })
@@ -563,7 +608,7 @@ def reject(request, pk):
         email.attach_alternative(html_content, "text/html")
         email.send()
         return redirect("base:task-review")
-    return render(request, "base/task_review.html", {"task" : task})
+    return render(request, "base/reject.html", {"task" : task})
 
 
 @login_required(login_url="base:login")
@@ -754,6 +799,8 @@ def vtu_data_and_airtime(request):
     user = request.user
     userprofile = user.userprofile
     user_wallet_balance = userprofile.balance
+    vtpass_balance = get_vt_pass_balance()
+    print(vtpass_balance)
 
     top_up_history = Top_up.objects.filter(user=user).order_by("-created_at")[:10]
 
@@ -773,19 +820,34 @@ def vtu_data_and_airtime(request):
             if amount < 100:
                 messages.error(request, "minimum amount 100")
                 return redirect("base:mobile_top_up")
+            
+            try:
+                vtpass_balance > Decimal(amount)
+            except:
+                messages.error(request, "error processing transaction")
+                return redirect("base:mobile_top_up")
+
+
+            print()
         
             if user_wallet_balance >= amount:
                 try:
-                    userprofile.balance -= amount
-                    userprofile.save()
                     response = airtime_vtu.buy_airtime(network, amount, phone)
-                    messages.success(request, f"{response}")
-                    Top_up.objects.create(
+                    if response == 'TRANSACTION SUCCESSFUL':
+                        Top_up.objects.create(
                         user=request.user,
                         amount=amount,
                         type='airtime'
-                    )
-                    return redirect("base:mobile_top_up")
+                        )
+                        userprofile.balance -= amount
+                        userprofile.save()
+                        messages.success(request, 'airtime purchase successfully')
+                        print(response)
+                        return redirect("base:mobile_top_up")
+                    else:
+                        messages.error(request, 'airtime purchase failed')
+                        print(response)
+                        return redirect("base:mobile_top_up")
                 except:
                     messages.error(request, f"{response}")
             else:
@@ -821,20 +883,31 @@ def vtu_data_and_airtime(request):
                     serviceID = "glo"
                 elif 'eti' in variation_code:
                     serviceID = "etisalat"
+                
+                try:
+                    vtpass_balance > Decimal(data_amount)
+                except:
+                    messages.error(request, "error processing transaction")
+                    return redirect("base:mobile_top_up")
 
                 print(variation_code)
                 if Decimal(user_wallet_balance) >= Decimal(str(data_amount)):
-                    userprofile.balance -= Decimal(str(data_amount))
-                    userprofile.save()
                     response = purchase_data(serviceID, data_amount, "08011111111", variation_code, user_phone_number)
-                    print(response)
-                    messages.success(request, f"{response}")
-                    Top_up.objects.create(
-                    user=request.user,
-                    amount = data_amount,
-                    type='data'
-                )
-                    return redirect("base:mobile_top_up")
+                    if response == 'TRANSACTION SUCCESSFUL':
+                        userprofile.balance -= Decimal(str(data_amount))
+                        userprofile.save()
+                        print(response)
+                        messages.success(request, "data purchase successfully")
+                        Top_up.objects.create(
+                        user=request.user,
+                        amount = data_amount,
+                        type='data'
+                        )
+                        return redirect("base:mobile_top_up")
+                    else:
+                        messages.error(request, 'data purchase failed')
+                        print(response)
+                        return redirect("base:mobile_top_up")
                 else:
                     messages.error(request, "insufficient amount")
                     return redirect("base:mobile_top_up")
@@ -872,3 +945,66 @@ def renew_sub(request):
             return redirect("base:dashboard")
             
     return render(request, "base/renew_sub.html")
+
+BOT_TOKEN = settings.TELEGRAM_BOT_KEY
+bot = telegram.Bot(token=BOT_TOKEN)
+
+
+# @user_passes_test(lambda u: u.is_superuser)
+def adminPage(request):
+    total_users = User.objects.all().count()
+    total_tasks = Task.objects.all().count()
+    total_deposit = Deposit.objects.all()[:10]
+    total_data_top_up = Top_up.objects.filter(type="data")[:10]
+    total_airtime_top_up = Top_up.objects.filter(type="airtime")[:10]
+    total_task_completed = UserTask.objects.filter(status="completed").count()
+    sum_of_total_deposit = Deposit.objects.aggregate(Sum('amount'))['amount__sum'] or 0
+    sum_of_total_withdrawals = Withdrawal.objects.filter(status='approved').aggregate(Sum('amount'))['amount__sum'] or 0
+    sum_of_total_topups = Top_up.objects.aggregate(Sum('amount'))['amount__sum'] or 0
+    sum_of_total_data_topups = Top_up.objects.filter(type='data').aggregate(Sum('amount'))['amount__sum'] or 0
+    sum_of_total_airtime_topups = Top_up.objects.filter(type='airtime').aggregate(Sum('amount'))['amount__sum'] or 0
+
+    context = {
+        "total_users" : total_users,
+        "total_tasks" : total_tasks,
+        "total_task_completed" : total_task_completed,
+        "sum_of_total_deposit" : sum_of_total_deposit,
+        "sum_of_total_withdrawals" : sum_of_total_withdrawals,
+        "sum_of_total_topups" : sum_of_total_topups,
+        "sum_of_total_data_topups" : sum_of_total_data_topups,
+        "sum_of_total_airtime_topups" : sum_of_total_airtime_topups,
+        "total_deposit" : total_deposit,
+        "total_data_top_up" : total_data_top_up,
+        "total_airtime_top_up" : total_airtime_top_up,
+    }
+
+    return render(request, 'base/admin.html', context)
+
+import asyncio
+
+@csrf_exempt
+def webhook(request):
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+        update = Update.de_json(data, bot)
+
+        # We run the async task in the event loop
+        asyncio.run(handle_update(update))
+
+        return JsonResponse({"ok": True})
+    return JsonResponse({"error": "Invalid request"}, status=400)
+
+async def handle_update(update):
+    chat_id = update.message.chat.id
+    message_text = update.message.text
+
+    if message_text == '/start':
+        await bot.send_message(
+            chat_id=chat_id,
+            text="Welcome! 👋 Click the button below to visit our website.",
+            reply_markup={
+                "inline_keyboard": [[
+                    {"text": "Visit Website", "url": "t.me/CashpopBot/cashpop"}
+                ]]
+            }
+        )
